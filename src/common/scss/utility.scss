@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins";
+
 
 #app {
   display: flex;
@@ -51,31 +50,20 @@ a {
 .tc { text-align: center !important; }
 .tl { text-align: left !important; }
 .tr { text-align: right !important; }
+
 .over_hide {
   overflow: hidden;
   height: 100px;
   word-break: break-all;
   text-align: left;
 }
+
 .text_ellipsis {
   @extend %text-ellipsis;
 }
 
-.text_ellipsis_2 {
-  @include text-multiLine-ellipsis(2, 18px);
-}
-
-.text_ellipsis_3 {
-  @include text-multiLine-ellipsis(3, 18px);
-}
-
-.text_ellipsis_5 {
-  @include text-multiLine-ellipsis(5, 17px);
-}
-
-
 .pl30 { padding-left: 30px; }
-.pr30 { padding-right: 30px； }
+.pr30 { padding-right: 30px; }
 .mt10 { margin-top: 10px; }
 .mt20 { margin-top: 20px; }
 .mt30 { margin-top: 30px; }
