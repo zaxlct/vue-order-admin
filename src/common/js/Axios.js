@@ -27,7 +27,7 @@ Axios.interceptors.response.use(res => {
   if(data.success) {
     return data
   } else if (data.errCode === '00002' && !data.success) {
-    router.push('/login')
+    location.href = location.origin + '/#/login'
   } else {
     Message.error(data.errMsg)
     return Promise.reject(data.errMsg)
