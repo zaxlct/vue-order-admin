@@ -1,15 +1,14 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Hello from '@/components/Hello'
+const OrderList = resolve => import('order/order-list/order-list').then(module => resolve(module))
 
-Vue.use(Router)
+const routers = [
+  {
+    path: '/',
+    redirect: '/order-list'
+  },
+  {
+    path: '/order-list',
+    component: OrderList,
+  },
+]
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Hello',
-      component: Hello
-    }
-  ]
-})
+export default routers

@@ -1,0 +1,38 @@
+@import 'variables';
+
+%text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  word-break:break-all;
+  word-wrap: normal;
+}
+%text_ellipsis {
+  @extend %text-ellipsis;
+}
+
+@mixin text-multiLine-ellipsis($line: 2, $lineHeight: 20px){
+  line-height: $lineHeight;
+  overflow: hidden;
+  height: $lineHeight * $line;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $line;
+  -moz-line-clamp: $line;
+  line-clamp: $line;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
+}
+
+%text-breakWord {
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+%text_breakWord {
+  @extend %text-breakWord;
+}

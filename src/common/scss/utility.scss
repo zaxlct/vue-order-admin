@@ -1,0 +1,83 @@
+@import "variables";
+@import "mixins";
+
+#app {
+  display: flex;
+  height: auto;
+  background: #f5f7f9;
+  flex-direction: column;
+  background-repeat: repeat-x;
+  background-position: center 0;
+
+  .app_content {
+    flex: 1;
+  }
+}
+
+.container {
+  width: $container_width !important;
+  margin: 0 auto;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.fr { float: right !important; }
+.fl { float: left !important; }
+.db { display: block; }
+.dib { display: inline-block; }
+
+.black { color: #000 !important; }
+.bg_white { background: #fff !important; }
+
+.pointer { cursor: pointer;}
+.u_line { text-decoration: underline; }
+.tc { text-align: center !important; }
+.tl { text-align: left !important; }
+.tr { text-align: right !important; }
+.over_hide {
+  overflow: hidden;
+  height: 100px;
+  word-break: break-all;
+  text-align: left;
+}
+.text_ellipsis {
+  @extend %text-ellipsis;
+}
+
+.text_ellipsis_2 {
+  @include text-multiLine-ellipsis(2, 18px);
+}
+
+.text_ellipsis_3 {
+  @include text-multiLine-ellipsis(3, 18px);
+}
+
+.text_ellipsis_5 {
+  @include text-multiLine-ellipsis(5, 17px);
+}
+
+
+.pl30 { padding-left: 30px; }
+.pr30 { padding-right: 30px； }
+.mt10 { margin-top: 10px; }
+.mt20 { margin-top: 20px; }
+.mt30 { margin-top: 30px; }
+.mb20 { margin-bottom: 20px; }
+.mb30 { margin-bottom: 30px; }
