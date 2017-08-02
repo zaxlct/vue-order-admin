@@ -8,12 +8,13 @@ import Routers from './router'
 import Util from 'common/js/setTitle'
 import 'common/scss/index.scss'
 import 'element-ui/lib/theme-default/index.css'
+import AxiosPlugin from 'common/js/Axios'
 
-
+Vue.use(AxiosPlugin)
 Vue.use(ElementUI)
+Vue.use(VueRouter)
 
 // route config
-Vue.use(VueRouter)
 const router = new VueRouter({
   routes: Routers
 })
