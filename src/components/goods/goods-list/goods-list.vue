@@ -4,7 +4,7 @@
     <section class="goods_list">
       <header class="header_nav">
         <div class="box">
-          订单：
+          订单：{{order_name}}
           <router-link :to="'/order_detail/'" class="order_name heme_color"></router-link>
           <el-input
             ref="searchInput"
@@ -16,7 +16,7 @@
             @keyup.enter.native="searchGoods"
             :on-icon-click="searchGoods">
           </el-input>
-          <el-button class="add_num_btn fr" type="text" v-if="showSearch">已添加：</el-button>
+          <el-button class="add_num_btn fr" type="text" v-if="showSearch">已添加：{{addedGoodsCount}} 个商品</el-button>
         </div>
       </header>
 
@@ -44,6 +44,8 @@
 <script>
   import GoodsMenu from 'base/goods-menu/goods-menu'
   import GoodsTableLayout from './goods-table-layout.vue'
+  import { mapState } from 'vuex'
+
   export default {
     components: {
       GoodsMenu,
@@ -57,46 +59,49 @@
         goodsListData: [],
         addedGoodsCount: 0, // 该订单里已添加的商品数
         pageCount: 0,
-        pageIndex: 0,
+        pageIndex: 1,
         breadData: {},
+        order_name: '',
       }
     },
 
     created() {
-      this._fetchGoodsList()
+      this.$store.dispatch('fetchGoodsList')
+    },
+
+    computed: mapState(['fetchGoodsListParams', 'goodsList']),
+
+    watch: {
+      goodsList(data) {
+        const {
+          goodsListVos,
+          goods_count,
+          page_count,
+          page_index,
+          title,
+          order_name,
+        } = data
+        this.goodsListData = goodsListVos
+        this.breadData = title
+        this.addedGoodsCount = goods_count
+        this.pageIndex = page_index
+        this.pageCount = page_count
+        this.order_name = order_name
+      },
+
+      fetchGoodsListParams() {
+
+      },
     },
 
     methods:{
-      _fetchGoodsList() {
-        const data = {
-          menu_id: 0,
-          page_index: 1,
-          page_size: 6,
-        }
-        this.$http.get('goods/goods_list', {params: data}).then(res => {
-          if(!res.data) return
-          const {
-            goodsListVos,
-            goods_count,
-            page_count,
-            page_index,
-            title,
-          } = res.data
-          this.goodsListData = goodsListVos
-          this.breadData = title
-          this.addedGoodsCount = goods_count
-          this.pageIndex = page_index
-          this.pageCount = page_count
-        })
-      },
-
       searchGoods() {
-      },
-
-      onPageChange(page) {
 
       },
 
+      onPageChange(page_index) {
+        this.$store.dispatch('fetchGoodsList', {page_index})
+      },
     },
   }
 </script>
@@ -142,4 +147,10 @@
     .goods_table
       width: 100%
       height: auto
+
+
+    .page_list
+      margin: auto
+      text-align: center
+      margin-top: 20px
 </style>
