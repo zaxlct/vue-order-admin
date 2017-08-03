@@ -138,15 +138,6 @@
         })
       },
 
-      background(img) {
-        return {
-          backgroundImage: 'url('+ img +')',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-        }
-      },
-
       downloadPDF(id) {
         window.open(process.env.BASE_API + 'order/order_excel?order_id=' + id)
       },
