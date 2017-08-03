@@ -11,11 +11,8 @@
         {{data.name}}
       </div>
 
-      <el-collapse-transition
-        v-if="data.node_list && data.menu_id === current_id_a"
-        v-for="data_son in data.node_list"
-        :key="data_son.menu_id">
-        <section class="menu menu_b">
+      <el-collapse-transition v-for="data_son in data.node_list" :key="data_son.menu_id">
+        <section class="menu menu_b" v-if="data.node_list && data.menu_id === current_id_a">
           <div
             @click="changeTree('current_id_b', data_son.menu_id, 2)"
             :class="[ data_son.menu_id === current_id_b && !data_son.node_list ? 'active' : '', 'item']"
@@ -25,12 +22,8 @@
             {{data_son.name}}
           </div>
 
-
-          <el-collapse-transition
-            v-if="data_son.node_list && data_son.menu_id === current_id_b"
-            v-for="data_grandson in data_son.node_list"
-            :key="data_grandson.menu_id">
-            <section class="menu">
+          <el-collapse-transition v-for="data_grandson in data_son.node_list" :key="data_grandson.menu_id">
+            <section class="menu menu_c" v-if="data_son.node_list && data_son.menu_id === current_id_b">
               <div
                 @click="changeTree('current_id_c', data_grandson.menu_id, 3)"
                 :class="[ data_grandson.menu_id === current_id_c ? 'active' : '', 'item']">
