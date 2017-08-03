@@ -172,9 +172,11 @@
 
   .rate_box
     font-size: 12px
+    line-height: 18px
 
     .rate
       display: inline-block
+      vertical-align: top
 
   .add_goods_btn
     width: 100%
