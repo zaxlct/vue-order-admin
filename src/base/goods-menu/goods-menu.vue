@@ -87,11 +87,13 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "~common/scss/mixins";
   $color: #021d44;
 
   .menu_layout {
     position: relative;
     padding-top: 20px;
+    min-height: 100vh;
     overflow-y: scroll;
     background: $color;
 
@@ -114,8 +116,9 @@
   .menu {
     width: 100%;
     height: auto;
-    font-size: 16px;
+    font-size: 14px;
     color: #fff;
+    @extend %text_ellipsis;
 
     .item {
       margin-bottom: 1px;
@@ -150,7 +153,7 @@
     background: lighten($color, 8%);
 
     .item {
-      padding-left: 45px;
+      padding-left: 40px;
     }
   }
 
