@@ -22,11 +22,6 @@ body {
   }
 }
 
-.container {
-  width: $container_width !important;
-  margin: 0 auto;
-}
-
 p {
   margin: 0;
   padding: 0;
@@ -73,3 +68,20 @@ a {
 .mt30 { margin-top: 30px; }
 .mb20 { margin-bottom: 20px; }
 .mb30 { margin-bottom: 30px; }
+
+// 调整表格间距
+.el-table .cell, .el-table th > div {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+// 商品列表页里的评分，icon 小一些
+.goods_table {
+  .el-rate__icon {
+    font-size: 12px !important;
+  }
+
+  .el-button + .el-button {
+    margin-left: 0;
+  }
+}

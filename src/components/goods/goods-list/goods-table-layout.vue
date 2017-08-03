@@ -1,0 +1,194 @@
+<template>
+  <el-table
+    :data="tableData"
+    stripe
+    v-if="tableData.length"
+    class="goods_table"
+    border>
+    <el-table-column label="产品图" width="180">
+      <template scope="scope">
+        <div class="goods_img" :style="backgroundImage(scope.row.goods_img)"></div>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="产品基本信息" min-width="180">
+      <template scope="scope">
+        <p class="text_ellipsis">{{scope.row.goods_name}}</p>
+        <p>{{scope.row.goodsPropertyVos[circle_index].sku}}</p>
+        <div
+          v-for="(vos, index) in scope.row.goodsPropertyVos"
+          :key="index"
+          :style="backgroundImage(vos.color, 'cover')"
+          @click.stop="selectColor(vos.color, vos.sku, index)"
+          :class="circle_index == index ? 'seleted' : ''"
+          class="color_circle"
+        >
+          <i class="i fr i-2"></i>
+        </div>
+        <p class="desc text_ellipsis">
+          {{scope.row.goods_process_desc}}
+        </p>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="材质" width="80">
+      <template scope="scope">
+        <p class="tc">{{scope.row.material}}</p>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="规格" width="120">
+      <template scope="scope">
+        <p>{{scope.row.sizes}}</p>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="工期" width="80">
+      <template scope="scope">
+        <p class="tc">{{scope.row.time_limit}}</p>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="单价" width="80">
+      <template scope="scope">
+        <p class="tc">{{scope.row.price}}</p>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="供应商" width="80">
+      <template scope="scope">
+        <p class="tc">{{scope.row.supplier}}</p>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="综合评分" min-width="150">
+      <template scope="scope">
+        <div class="rate_box" v-for="(rate, index) in rateList" :key="index"  v-if="scope.row.goodsListCommentVo">
+          <span class="demonstration">{{rate.value}}</span>
+          <el-rate
+            class="rate"
+            disabled
+            :value="scope.row.goodsListCommentVo[rate.key]"
+            :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+          </el-rate>
+        </div>
+        <p class="tc" v-if="!scope.row.goodsListCommentVo">暂无评分</p>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="操作" min-width="130">
+      <template scope="scope">
+        <el-button type="primary" class="add_goods_btn" @click="handleEdit(scope.$index, scope.row)">添加商品</el-button>
+        <el-button
+          size="small"
+          class="small_cad"
+          :disabled="!scope.row.cad"
+          @click="windowOpen(goods.cad)">
+          CAD
+        </el-button>
+        <el-button
+          size="small"
+          class="btn_sku"
+          :disabled="!scope.row.su"
+          @click="windowOpen(goods.su)">
+          SU
+        </el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+<script>
+  import { backgroundImage } from 'common/js/mixins'
+  export default {
+    props: {
+      tableData: {
+        type: Array,
+      },
+    },
+    data() {
+      return {
+        circle_index: 0,
+        rateList: [
+          {key: 'ctimeLimit', value: '工期'},
+          {key: 'cquality', value: '质量'},
+          {key: 'ceffect', value: '效果'},
+          {key: 'ccustomerService', value: '售后'},
+        ],
+      }
+    },
+
+    mixins: [backgroundImage],
+
+    methods:{
+      handleEdit(index, row) {
+        console.log(index, row)
+      },
+      handleDelete(index, row) {
+        console.log(index, row)
+      },
+      selectColor() {
+
+      },
+
+      windowOpen(url) {
+        if(!url) return
+        window.open(url)
+      },
+    },
+  }
+</script>
+<style lang="sass" scoped>
+.goods_table
+  p
+    font-size: 12px
+    line-height: 20px
+
+  .goods_img
+    width: 100%
+    min-height: 100px
+
+  .color_circle
+    position: relative
+    left: 0
+    top: 0
+    width: 25px
+    height: 25px
+    border-radius: 50%
+    background-size: cover
+    display: inline-block
+    cursor: pointer
+    border: 1px #3a3a3a solid
+
+    i
+      display: none
+
+    .seleted i
+      display: block
+      position: absolute
+      bottom: 0
+      right: 0
+      color: green
+      font-size: 14px !important
+
+  .rate_box
+    font-size: 12px
+
+    .rate
+      display: inline-block
+
+  .add_goods_btn
+    width: 100%
+    height: 30px
+    font-size: 14px
+
+  .btn_sku
+    display: inline-block
+    margin-right: 10px
+    margin-top: 10px
+    width: 45%
+
+  .btn_cad
+    @extend .btn_sku
+    margin-right: 0
+
+</style>
