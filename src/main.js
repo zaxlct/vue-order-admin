@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
 
 import App from './App'
+import store from './store'
 import Routers from './router'
 import Util from 'common/js/setTitle'
 import 'common/scss/index.scss'
@@ -27,5 +28,6 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
