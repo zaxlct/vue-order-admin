@@ -2,7 +2,7 @@
   <div class="menu_layout">
     <router-link to="/"><img src="~common/image/logo.png" class="logo" /></router-link>
 
-    <section class="menu menu_a" v-for="(data, index) in menu_list" :key="index">
+    <div class="menu menu_a" v-for="(data, index) in menu_list" :key="index">
       <div
         @click="changeTree('current_id_a', data.menu_id, 1)"
         class="item">
@@ -10,12 +10,12 @@
         <i v-show="data.node_list && data.menu_id === current_id_a" class="i i-down"></i>
         {{data.name}}
       </div>
-      <el-collapse-transition>
-        <div
-          class="menu menu_b"
-          v-if="data.node_list && data.menu_id === current_id_a"
-          v-for="data_son in data.node_list"
-          :key="data_son.menu_id">
+
+      <el-collapse-transition
+        v-if="data.node_list && data.menu_id === current_id_a"
+        v-for="data_son in data.node_list"
+        :key="data_son.menu_id">
+        <section class="menu menu_b">
           <div
             @click="changeTree('current_id_b', data_son.menu_id, 2)"
             :class="[ data_son.menu_id === current_id_b && !data_son.node_list ? 'active' : '', 'item']"
@@ -25,21 +25,23 @@
             {{data_son.name}}
           </div>
 
-          <div
-            class="menu menu_c"
+
+          <el-collapse-transition
             v-if="data_son.node_list && data_son.menu_id === current_id_b"
             v-for="data_grandson in data_son.node_list"
             :key="data_grandson.menu_id">
+            <section class="menu">
+              <div
+                @click="changeTree('current_id_c', data_grandson.menu_id, 3)"
+                :class="[ data_grandson.menu_id === current_id_c ? 'active' : '', 'item']">
+                {{data_grandson.name}}
+              </div>
+            </section>
+          </el-collapse-transition>
 
-            <div
-              @click="changeTree('current_id_c', data_grandson.menu_id, 3)"
-              :class="[ data_grandson.menu_id === current_id_c ? 'active' : '', 'item']">
-              {{data_grandson.name}}
-            </div>
-          </div>
-        </div>
+        </section>
       </el-collapse-transition>
-    </section>
+    </div>
 
     <a class="admin_icon" href="http://rzk.in-zhuang.com/gzk/index.html" target="_blank">
       <i class="el-icon-menu"></i>
