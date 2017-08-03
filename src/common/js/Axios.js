@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 
-const Axios = axios.create({
+export const Axios = axios.create({
   baseURL: process.env.BASE_API,
   timeout: 5000,
 })
@@ -36,6 +36,7 @@ Axios.interceptors.response.use(res => {
   Message.error('网络错误，请检查网络再试！')
   return Promise.reject(error)
 })
+
 
 export default {
   install(Vue) {
