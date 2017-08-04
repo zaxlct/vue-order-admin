@@ -90,6 +90,8 @@
         this.order_name = order_name
       },
 
+      // 把 params 序列化到 URL 的 query 里，
+      // TODO: 但是网页刷新后并没有反过来把 URL query 里的参数分配到 params 里
       fetchGoodsListParams(params) {
         this.$router.push({
           query: params
