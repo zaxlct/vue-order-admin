@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="tableData"
+    :data="newTableData"
     class="goods_table"
     stripe
     border>
@@ -13,13 +13,13 @@
     <el-table-column label="产品基本信息" min-width="180">
       <template scope="scope">
         <p class="text_ellipsis">{{scope.row.goods_name}}</p>
-        <p>{{scope.row.goodsPropertyVos[circle_index].sku}}</p>
+        <p>{{scope.row.goodsPropertyVos[scope.row.currentSkuIndex].sku}}</p>
         <div
           v-for="(vos, index) in scope.row.goodsPropertyVos"
           :key="index"
           :style="backgroundImage(vos.color, 'cover')"
-          @click.stop="selectColor(vos.color, vos.sku, index)"
-          :class="circle_index == index ? 'seleted' : ''"
+          @click.stop="selectColor(index, scope.$index)"
+          :class="scope.row.currentSkuIndex === index ? 'seleted' : ''"
           class="color_circle"
         >
           <i class="i fr i-2"></i>
@@ -77,7 +77,7 @@
 
     <el-table-column label="操作" min-width="130">
       <template scope="scope">
-        <el-button type="primary" class="add_goods_btn" @click="handleEdit(scope.$index, scope.row)">添加商品</el-button>
+        <el-button type="primary" class="add_goods_btn" @click="addGoods(scope.$index)">添加商品</el-button>
         <el-button
           size="small"
           class="small_cad"
@@ -105,8 +105,11 @@
       },
     },
     data() {
+      const newTableData = this.tableData.map(item => ({...item, currentSkuIndex: 0}))
+      const {order_id} = this.$route.params
       return {
-        circle_index: 0,
+        newTableData,
+        order_id,
         rateList: [
           {key: 'ctimeLimit', value: '工期'},
           {key: 'cquality', value: '质量'},
@@ -119,14 +122,31 @@
     mixins: [backgroundImage],
 
     methods:{
-      handleEdit(index, row) {
-        console.log(index, row)
+      selectColor(whichSkuIndex, whichGoodsIndex) {
+        let data = [...this.newTableData]
+        data[whichGoodsIndex].currentSkuIndex = whichSkuIndex
+        this.newTableData = data
       },
-      handleDelete(index, row) {
-        console.log(index, row)
-      },
-      selectColor() {
 
+      addGoods(whichGoodsIndex) {
+        const { currentSkuIndex, goodsPropertyVos } = this.newTableData[whichGoodsIndex]
+        const {
+          sku,
+          color
+        } =  goodsPropertyVos[currentSkuIndex]
+        const data = {
+          sku,
+          color,
+          order_id: this.order_id,
+        }
+        this.$http.post('order/add_goods', data).then(res => {
+          if (!res || !res.data) {
+            this.$message.error('添加商品失败！')
+          } else {
+            this.$emit('onAddedGoodsCountChange', res.data)
+            this.$message.success('添加商品成功！')
+          }
+        })
       },
 
       windowOpen(url) {
@@ -161,13 +181,13 @@
     i
       display: none
 
-    .seleted i
-      display: block
-      position: absolute
-      bottom: 0
-      right: 0
-      color: green
-      font-size: 14px !important
+  .seleted i
+    display: block
+    position: absolute
+    top: 5px
+    right: 0
+    color: green
+    font-size: 14px !important
 
   .rate_box
     font-size: 12px
