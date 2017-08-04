@@ -20,10 +20,25 @@
       </header>
 
       <div class="content_box">
-        <header class="bread_box" v-if="Object.keys(breadData).length">
-          <el-breadcrumb separator="/">
+        <header class="bread_box">
+          <el-breadcrumb class="bread fl" separator="/" v-if="Object.keys(breadData).length">
             <el-breadcrumb-item :key="index" v-for="(item, index) in breadData">{{item}}</el-breadcrumb-item>
           </el-breadcrumb>
+
+          <el-select class="color_select" v-model="goodsColor" clearable size="small" placeholder="颜色筛选">
+            <el-option
+              v-for="item in goodsAllColor"
+              :key="item.code"
+              :label="item.codeDesc"
+              :value="item.code">
+              <span style="vertical-align: top;">{{item.codeDesc}}</span>
+              <img
+                class="color_circle"
+                :src="item.url"
+                style="width:20px; height:20px; border: 1px #3a3a3a solid; border-radius: 50%; vertical-align: top; margin-left: 10px;"
+              />
+            </el-option>
+          </el-select>
         </header>
 
         <goods-table-layout
@@ -67,6 +82,7 @@
         breadData: {},
         order_name: '',
         goodsColor: '',
+        goodsAllColor: [],
       }
     },
 
@@ -74,6 +90,7 @@
       // pageIndex 一旦改变就触发 onPageChange 事件有点不妥，故加了这个变量做限制
       this.onPageChangeLock = false
       this.$store.dispatch('fetchGoodsList', {order_id: this.order_id})
+      this._fetchGoodsColors()
     },
 
     computed: mapState(['fetchGoodsListParams', 'goodsList']),
@@ -101,6 +118,21 @@
           query: params
         })
       },
+
+      goodsColor(goods_color) {
+        // 改变 pageIndex 时会自动触发 onPageChange 事件，故需要设置 onPageChangeLock
+        if(this.pageIndex !== 1) {
+          this.onPageChangeLock = true
+          this.pageIndex = 1
+        }
+        const params = {
+          goods_color,
+          page_index: this.pageIndex,
+          menu_id: 0,
+          level: 1,
+        }
+        this.$store.dispatch('fetchGoodsList', params)
+      },
     },
 
     methods:{
@@ -111,11 +143,9 @@
           this.onPageChangeLock = true
           this.pageIndex = 1
         }
-        this.goodsColor = ''
         const params = {
           search_key: this.searchKey,
           page_index: this.pageIndex,
-          goods_color: this.goodsColor,
           menu_id: 0,
           level: 1,
         }
@@ -133,6 +163,13 @@
 
       onMenuChange(params) {
         this.$store.dispatch('fetchGoodsList', params)
+      },
+
+      _fetchGoodsColors() {
+        this.$http.get('goods/goods_color').then(res => {
+          if(!res || !res.data) return
+          this.goodsAllColor = res.data
+        })
       },
     },
   }
@@ -167,14 +204,23 @@
     .search_input
       width: 200px
 
+
   .content_box
     padding: 20px
     width: 100%
     height: auto
 
     .bread_box
-      height: 30px
-      line-height: 30px
+      margin-bottom: 5px
+      height: 32px
+      line-height: 32px
+
+      .bread
+        line-height: 32px
+
+      .color_select
+        width: 140px
+        float: right
 
     .goods_table
       width: 100%
