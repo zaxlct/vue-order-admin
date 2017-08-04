@@ -62,10 +62,13 @@
         pageIndex: 1,
         breadData: {},
         order_name: '',
+        goodsColor: '',
       }
     },
 
     created() {
+      // pageIndex 一旦改变就触发 onPageChange 事件有点不妥，故加了这个变量做限制
+      this.onPageChangeLock = false
       this.$store.dispatch('fetchGoodsList')
     },
 
@@ -74,32 +77,48 @@
     watch: {
       goodsList(data) {
         const {
-          goodsListVos,
+          goodsListVos = [],
           goods_count,
           page_count,
-          page_index,
-          title,
-          order_name,
+          title = {},
+          order_name = '',
         } = data
-        this.goodsListData = goodsListVos
+        this.goodsListData = goodsListVos || []
         this.breadData = title
         this.addedGoodsCount = goods_count
-        this.pageIndex = page_index
         this.pageCount = page_count
         this.order_name = order_name
       },
 
-      fetchGoodsListParams() {
-
+      fetchGoodsListParams(params) {
+        this.$router.push({
+          query: params
+        })
       },
     },
 
     methods:{
       searchGoods() {
-
+        // 只要搜索传值了，后端会把所有的条件置空去搜索，尽管这样前端还是得把一些条件给清空
+        // 改变 pageIndex 时会自动触发 onPageChange 事件，故需要 设置 onPageChangeLock
+        this.onPageChangeLock = true
+        this.pageIndex = 1
+        this.goodsColor = ''
+        const params = {
+          search_key: this.searchKey,
+          page_index: this.pageIndex,
+          goods_color: this.goodsColor,
+          menu_id: 0,
+          level: 1,
+        }
+        this.$store.dispatch('fetchGoodsList', params)
       },
 
       onPageChange(page_index) {
+        if(this.onPageChangeLock) {
+          this.onPageChangeLock = false
+          return
+        }
         this.$store.dispatch('fetchGoodsList', {page_index})
       },
     },
