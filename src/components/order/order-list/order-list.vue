@@ -25,10 +25,8 @@
     </header>
 
     <div class="order_list_container">
-      <router-link
-        tag="div"
+      <div
         v-if="order_list.length"
-        :to="/order_detail/ + order.order_id"
         class="order_box"
         v-for="order in order_list" :key="order.order_id">
         <header class="thead">
@@ -40,7 +38,7 @@
 
           <el-button @click.stop.native="downloadPDF(order.order_id)" size="small" type="primary" class="export_order_btn fr">导出订单</el-button>
 
-          <i class="i fr i-edit" />
+          <router-link tag="i" :to="/order-detail/ + order.order_id" class="i fr i-edit"></router-link>
           <span class="fr">
             订单总额：{{order.sum}}
           </span>
@@ -49,10 +47,10 @@
           </span>
         </header>
 
-        <ul class="img_list">
+        <router-link tag="ul" :to="/order-detail/ + order.order_id" class="img_list">
           <li v-for="img_src in order.img_list.slice(0, 7)" :key="img_src" :style="backgroundImage(img_src)"></li>
-        </ul>
-      </router-link>
+        </router-link>
+      </div>
 
       <h1 v-if="!order_list.length">没有数据</h1>
 
@@ -235,7 +233,6 @@
       margin-bottom: 20px;
       display: block;
       background: #fff;
-      cursor: pointer;
 
       &:hover {
         background: rgba(227, 232, 238, 0.33);
@@ -287,13 +284,13 @@
       margin: 0;
       width: 100%;
       height: 100px;
+      cursor: pointer;
 
       li {
         display: inline-block;
         width: 130px;
         height: 100px;
         margin-right: 10px;
-        cursor: pointer;
         background-size: contain;
         overflow: hidden;
       }
