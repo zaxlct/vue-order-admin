@@ -105,10 +105,8 @@
       },
     },
     data() {
-      const newTableData = this.tableData.map(item => ({...item, currentSkuIndex: 0}))
       const {order_id} = this.$route.params
       return {
-        newTableData,
         order_id,
         rateList: [
           {key: 'ctimeLimit', value: '工期'},
@@ -120,6 +118,12 @@
     },
 
     mixins: [backgroundImage],
+
+    computed: {
+      newTableData() {
+        return this.tableData.map(item => ({...item, currentSkuIndex: 0}))
+      }
+    },
 
     methods:{
       selectColor(whichSkuIndex, whichGoodsIndex) {
