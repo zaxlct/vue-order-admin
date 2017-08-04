@@ -3,65 +3,67 @@
     <header class="header_nav">
       <div class="container">
         <router-link to="/"><img src="~common/image/logo.png" class="logo" /></router-link>
-        <el-button class="fr logout" type="danger" @click="logout">注销登录</el-button>
+        <el-button class="fr logout" @click="logout">注销登录</el-button>
         <el-input
-          class="search_input fr mt10"
+          class="search_input fr"
           placeholder="请输入订单名称"
           icon="search"
           v-model="search_key"
           @keyup.enter.native="searchOrder"
           :on-icon-click="searchOrder">
         </el-input>
+        <el-button class="add_order fr" @click="dialogFormVisible = true" type="primary">新建订单</el-button>
+
+        <el-dialog title="请输入订单名称" :visible.sync="dialogFormVisible">
+          <el-input v-model="order_name" @keyup.enter.native="addOrder" placeholder="请输入内容订单名称"></el-input>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addOrder">确 定</el-button>
+          </div>
+        </el-dialog>
       </div>
     </header>
 
-    <div class="table_container container">
-      <header class="btn_area">
-        <el-button class="add_order fr" @click="dialogFormVisible = true" type="primary">新建订单</el-button>
-        <el-dialog title="请输入订单名称" :visible.sync="dialogFormVisible">
-          <el-input v-model="order_name" @keyup.enter.native="asyncOK" placeholder="请输入内容订单名称"></el-input>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="asyncOK">确 定</el-button>
-          </div>
-        </el-dialog>
-      </header>
+    <div class="order_list_container">
+      <router-link
+        tag="div"
+        v-if="order_list.length"
+        :to="/order_detail/ + order.order_id"
+        class="order_box"
+        v-for="order in order_list" :key="order.order_id">
+        <header class="thead">
+          {{order.order_name}}
 
-      <div class="table">
-        <router-link tag="div" v-if="order_list.length" :to="/order_detail/ + order.order_id" class="item" v-for="order in order_list" :key="order.order_id">
-          <header class="header">
-            {{order.order_name}}
-            <el-button @click.stop.native="downloadPDF(order.order_id)" size="small" style="margin-top: 4px;" type="primary" class="fr">导出订单</el-button>
-
-            <i class="i fr i-edit" />
-            <span class="fr">
-              订单总额：{{order.sum}}
-            </span>
-            <span class="fr">
-              创建时间：{{order.created_time | getLocalTime}}
-            </span>
-          </header>
-
-          <p class="order_note text_ellipsis">
+          <span class="order_note text_ellipsis">
             备注：{{order.comment || '暂无备注'}}
-          </p>
+          </span>
 
-          <ul class="img_list">
-            <li v-for="img_src in order.img_list.slice(0, 7)" :key="img_src" :style="backgroundImage(img_src)"></li>
-          </ul>
-        </router-link>
+          <el-button @click.stop.native="downloadPDF(order.order_id)" size="small" type="primary" class="export_order_btn fr">导出订单</el-button>
 
-        <h1 v-if="!order_list.length">没有数据</h1>
+          <i class="i fr i-edit" />
+          <span class="fr">
+            订单总额：{{order.sum}}
+          </span>
+          <span class="fr">
+            创建时间：{{order.created_time | getLocalTime}}
+          </span>
+        </header>
 
-        <el-pagination
-          v-if="order_list.length"
-          class="page_list"
-          layout="prev, pager, next"
-          @current-change="changePage"
-          :current-page="page_index"
-          :page-count="page_count">
-        </el-pagination>
-      </div>
+        <ul class="img_list">
+          <li v-for="img_src in order.img_list.slice(0, 7)" :key="img_src" :style="backgroundImage(img_src)"></li>
+        </ul>
+      </router-link>
+
+      <h1 v-if="!order_list.length">没有数据</h1>
+
+      <el-pagination
+        v-if="order_list.length"
+        class="page_list"
+        layout="prev, pager, next"
+        @current-change="changePage"
+        :current-page="page_index"
+        :page-count="page_count">
+      </el-pagination>
     </div>
   </section>
 </template>
@@ -116,24 +118,23 @@
     },
 
     methods: {
-      asyncOK() {
+      addOrder() {
         if (!this.order_name) {
-          this.message('请输入订单名称！', 'error')
-          this.dialogFormVisible = false
+          this.$message.error('请输入订单名称！', 'error')
           return
         }
         const DATA = {
           order_name: this.order_name
         }
-        const AJAX = new AjaxFactory('order/add_order', DATA)
-        AJAX.POST().then(res => {
+
+        this.$http.post('order/add_order', DATA).then(res => {
           this.dialogFormVisible = false
           if (!res || !res.data) return
           const order_id = res.data
           if (order_id) {
-            this.$router.push(`/order/${order_id}/select_goods`)
+            this.$router.push(`/goods-list/${order_id}`)
           } else {
-            this.message('创建订单失败！', 'error')
+            this.$message.error('创建订单失败！', 'error')
           }
         })
       },
@@ -186,40 +187,41 @@
 
 <style lang="scss" scoped>
   .header_nav {
+    padding: 0 30px;
     width: 100%;
-    height: 50px;
+    height: 60px;
+    line-height: 60px;
     background: #eee;
+
+    .add_order {
+      margin-top: 12px;
+      margin-right: 60px;
+      width: 150px;
+    }
+
+    .logo {
+      width: 150px;
+      height: 50px;
+      vertical-align: middle;
+    }
+
+    .logout {
+      margin-top: 10px;
+      margin-left: 20px;
+    }
+
+    .search_input {
+      width: 200px;
+    }
   }
 
-  .logo {
-    width: 145px;
-    height: 50px;
-  }
-
-  .logout {
-    margin-left: 20px;
-    margin-top: 8px;
-  }
-
-  .search_input {
-    width: 200px;
-  }
-
-  .table_container {
-    margin-top: 15px;
-  }
-
-  .btn_area {
-    width: 100%;
-    margin: auto;
-    height: 40px;
-  }
-
-  .table {
+  .order_list_container {
+    margin-top: 30px;
     margin-left: 20px;
     margin-right: 20px;
 
-    .item {
+    .order_box {
+      margin-bottom: 20px;
       display: block;
       background: #fff;
       cursor: pointer;
@@ -229,7 +231,7 @@
       }
     }
 
-    .header {
+    .thead {
       color: #3a3a3a;
       height: 36px;
       line-height: 36px;
@@ -237,8 +239,13 @@
       border-bottom: 1px #e3e8ee solid;
       font-size: 14px;
 
-      .fr {
+      .export_order_btn {
+        margin-top: 4px;
         margin-left: 30px;
+      }
+
+      .fr {
+        margin-left: 20px;
       }
 
       .i-edit {
@@ -254,27 +261,31 @@
         cursor: pointer;
       }
     }
+
+
+    .order_note {
+      margin-top: 10px;
+      padding-left: 2%;
+      width: 98%;
+      color: #666;
+      font-size: 14px;
+      line-height: 18px;
+    }
+
     .img_list {
-      padding: 15px 50px;
-      padding-bottom: 0;
-      height: 110px;
+      margin: 0;
+      width: 100%;
+      height: 100px;
 
       li {
         display: inline-block;
         width: 130px;
-        height: 80px;
+        height: 100px;
         margin-right: 10px;
         cursor: pointer;
         background-size: contain;
         overflow: hidden;
       }
-    }
-
-    .order_note {
-      padding-left: 2%;
-      width: 98%;
-      color: #666;
-      font-size: 12px;
     }
   }
 
