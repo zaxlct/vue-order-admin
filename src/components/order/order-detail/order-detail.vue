@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <goods-menu class="goods_menu"></goods-menu>
+    <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
 
     <section class="order_detail">
       <nav class="nav_container">
@@ -76,6 +76,13 @@
           this.otherOrderList = orderExtendDetails
           this.order_name = order_name
           this.order_comment = order_comment
+        })
+      },
+
+      onMenuChange(query) {
+        this.$router.push({
+          path: '/goods-list/' + this.order_id,
+          query,
         })
       },
 

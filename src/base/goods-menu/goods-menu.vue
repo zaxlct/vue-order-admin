@@ -73,7 +73,7 @@
           menu_id,
           level,
         }
-        this.$store.dispatch('fetchGoodsList', params)
+        this.$emit('onMenuChange', params)
       },
 
       _fetchMenuData() {
