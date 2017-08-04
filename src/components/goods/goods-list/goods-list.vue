@@ -4,7 +4,7 @@
     <section class="goods_list">
       <header class="header_nav">
         <div class="box">
-          订单：{{order_name}}
+          订单：<router-link :to="'/order-detail/' + this.order_id">{{order_name}}</router-link>
           <router-link :to="'/order_detail/'" class="order_name heme_color"></router-link>
           <el-input
             ref="searchInput"
@@ -20,10 +20,9 @@
       </header>
 
       <div class="content_box">
-        <header class="bread_box">
+        <header class="bread_box" v-if="Object.keys(breadData).length">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item>首页</el-breadcrumb-item>
-            <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+            <el-breadcrumb-item :key="index" v-for="(item, index) in breadData">{{item}}</el-breadcrumb-item>
           </el-breadcrumb>
         </header>
 
@@ -84,7 +83,7 @@
           order_name = '',
         } = data
         this.goodsListData = goodsListVos || []
-        this.breadData = title
+        this.breadData = title || {}
         this.addedGoodsCount = goods_count
         this.pageCount = page_count
         this.order_name = order_name
