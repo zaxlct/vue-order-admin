@@ -68,6 +68,10 @@ a {
 .mt30 { margin-top: 30px; }
 .mb20 { margin-bottom: 20px; }
 .mb30 { margin-bottom: 30px; }
+.ml20 { margin-left: 20px; }
+.mr20 { margin-right: 20px; }
+.ml30 { margin-left: 30px !important; }
+.mr30 { margin-right: 30px !important; }
 
 // 调整表格间距
 .el-table .cell, .el-table th > div {
@@ -76,7 +80,8 @@ a {
 }
 
 // 商品列表页里的评分，icon 小一些
-.goods_table {
+.goods_table,
+.order_table {
   .el-rate__icon {
     font-size: 12px !important;
   }
