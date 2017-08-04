@@ -26,7 +26,12 @@
           </el-breadcrumb>
         </header>
 
-        <goods-table-layout :tableData="goodsListData" v-if="goodsListData.length" class="goods_table"></goods-table-layout>
+        <goods-table-layout
+          :tableData="goodsListData"
+          v-if="goodsListData.length"
+          @onAddedGoodsCountChange="num => addedGoodsCount = num"
+          class="goods_table">
+        </goods-table-layout>
 
         <el-pagination
           class="page_list"
