@@ -76,7 +76,7 @@
         order_name: '',
         search_key: '',
         page_index: 1,
-        page_size: 3,
+        page_size: 6,
         page_count: 1,
         dialogFormVisible: false,
         order_list: [],
