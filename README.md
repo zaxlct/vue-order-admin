@@ -8,6 +8,7 @@
 - vue-router
 - Vuex
 - Axios
+- Element-UI
 - ES6 && ES7
 - Sass
 
