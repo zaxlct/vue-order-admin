@@ -60,7 +60,7 @@
         v-if="order_list.length"
         class="page_list"
         layout="prev, pager, next"
-        @current-change="changePage"
+        @current-change="onPageChange"
         :current-page="page_index"
         :page-count="page_count">
       </el-pagination>
@@ -76,7 +76,7 @@
         order_name: '',
         search_key: '',
         page_index: 1,
-        page_size: 6,
+        page_size: 3,
         page_count: 1,
         dialogFormVisible: false,
         order_list: [],
@@ -86,6 +86,8 @@
     mixins: [backgroundImage],
 
     created() {
+      // page_index 一旦改变就触发 onPageChange 事件有点不妥，故加了这个变量做限制
+      this.onPageChangeLock = false
       this.fetchData()
     },
 
@@ -153,13 +155,13 @@
       },
 
       fetchData() {
-        const DATA = {
+        const params = {
           page_index: this.page_index,
           page_size: this.page_size,
           search_key: this.search_key,
         }
 
-        this.$http.get('order/order_list', DATA).then(res => {
+        this.$http.get('order/order_list', {params} ).then(res => {
           if (res) {
             const {
               orderListVos = [], page_count = 1
@@ -172,12 +174,21 @@
 
       // 搜索
       searchOrder() {
-        this.page_index = 1
+        // 只要搜索传值了，后端会把所有的条件置空去搜索，尽管这样前端还是得把一些条件给清空
+        // 改变 pageIndex 时会自动触发 onPageChange 事件，故需要设置 onPageChangeLock
+        if(this.pageIndex !== 1) {
+          this.onPageChangeLock = true
+          this.pageIndex = 1
+        }
         this.fetchData()
       },
 
       // 选择页码
-      changePage(page) {
+      onPageChange(page) {
+        if(this.onPageChangeLock) {
+          this.onPageChangeLock = false
+          return
+        }
         this.page_index = page
         this.fetchData()
       },
