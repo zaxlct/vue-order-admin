@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <goods-menu class="goods_menu"></goods-menu>
+    <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
     <section class="goods_list">
       <header class="header_nav">
         <div class="box">
@@ -12,11 +12,10 @@
             v-model="searchKey"
             placeholder="请输入商品名称或商品编号"
             icon="search"
-            v-if="showSearch"
             @keyup.enter.native="searchGoods"
             :on-icon-click="searchGoods">
           </el-input>
-          <el-button class="add_num_btn fr" type="text" v-if="showSearch">已添加：{{addedGoodsCount}} 个商品</el-button>
+          <el-button class="add_num_btn fr" type="text">已添加：{{addedGoodsCount}} 个商品</el-button>
         </div>
       </header>
 
@@ -53,8 +52,9 @@
     },
 
     data() {
+      const { order_id } = this.$route.params
       return {
-        showSearch: true,
+        order_id,
         searchKey: '',
         goodsListData: [],
         addedGoodsCount: 0, // 该订单里已添加的商品数
@@ -69,7 +69,7 @@
     created() {
       // pageIndex 一旦改变就触发 onPageChange 事件有点不妥，故加了这个变量做限制
       this.onPageChangeLock = false
-      this.$store.dispatch('fetchGoodsList')
+      this.$store.dispatch('fetchGoodsList', {order_id: this.order_id})
     },
 
     computed: mapState(['fetchGoodsListParams', 'goodsList']),
@@ -125,6 +125,10 @@
         }
         this.pageIndex = page_index
         this.$store.dispatch('fetchGoodsList', {page_index})
+      },
+
+      onMenuChange(params) {
+        this.$store.dispatch('fetchGoodsList', params)
       },
     },
   }
