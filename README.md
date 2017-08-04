@@ -15,6 +15,8 @@
 ## 网站展示
 ![首页](https://ws4.sinaimg.cn/large/006tNc79ly1fi7qp8274qj31kw14dn30.jpg)
 ![订单详情](https://ws1.sinaimg.cn/large/006tNc79ly1fi7qqwk2rdj31kw0scn59.jpg)
+- 商品详情页（TODO）
+- 商品评论页（TODO）
 
 
 ## 功能介绍
