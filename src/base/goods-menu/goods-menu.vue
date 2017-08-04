@@ -61,18 +61,19 @@
     },
 
     methods: {
-      changeTree(key, id, level) {
+      changeTree(key, menu_id, level) {
         if(key === 'current_id_b') this.current_id_c = ''
-        if(this[key] === id) {
+        if(this[key] === menu_id) {
           this[key] = ''
         } else {
-          this[key] = id
+          this[key] = menu_id
         }
 
-//        this.$router.push({
-//          path: `/order/${this.$route.params.order_id}/select_goods`,
-//          query: { menu_id: id , level}
-//        })
+        const params = {
+          menu_id,
+          level,
+        }
+        this.$store.dispatch('fetchGoodsList', params)
       },
 
       _fetchMenuData() {
