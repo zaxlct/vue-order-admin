@@ -100,9 +100,11 @@
     methods:{
       searchGoods() {
         // 只要搜索传值了，后端会把所有的条件置空去搜索，尽管这样前端还是得把一些条件给清空
-        // 改变 pageIndex 时会自动触发 onPageChange 事件，故需要 设置 onPageChangeLock
-        this.onPageChangeLock = true
-        this.pageIndex = 1
+        // 改变 pageIndex 时会自动触发 onPageChange 事件，故需要设置 onPageChangeLock
+        if(this.pageIndex !== 1) {
+          this.onPageChangeLock = true
+          this.pageIndex = 1
+        }
         this.goodsColor = ''
         const params = {
           search_key: this.searchKey,
@@ -119,6 +121,7 @@
           this.onPageChangeLock = false
           return
         }
+        this.pageIndex = page_index
         this.$store.dispatch('fetchGoodsList', {page_index})
       },
     },
