@@ -1,9 +1,8 @@
 <template>
   <el-table
     :data="tableData"
-    stripe
-    v-if="tableData.length"
     class="goods_table"
+    stripe
     border>
     <el-table-column label="产品图" width="180">
       <template scope="scope">

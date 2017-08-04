@@ -28,7 +28,7 @@
           </el-breadcrumb>
         </header>
 
-        <goods-table-layout :tableData="goodsListData" class="goods_table"></goods-table-layout>
+        <goods-table-layout :tableData="goodsListData" v-if="goodsListData.length" class="goods_table"></goods-table-layout>
 
         <el-pagination
           class="page_list"
@@ -43,7 +43,7 @@
 </template>
 <script>
   import GoodsMenu from 'base/goods-menu/goods-menu'
-  import GoodsTableLayout from './goods-table-layout.vue'
+  import GoodsTableLayout from './goods-table-layout'
   import { mapState } from 'vuex'
 
   export default {
