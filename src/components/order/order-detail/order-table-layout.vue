@@ -1,6 +1,7 @@
 <template>
   <el-table
-    :data="tableData"
+    :data="orderDetail"
+    v-if="orderDetail.length"
     border
     stripe
     class="order_table"
@@ -46,20 +47,33 @@
 
     <el-table-column label="数量" width="130">
       <template scope="scope">
-        <el-input-number size="small" style="width: 106px;" v-model="num" :min="1"></el-input-number>
+        <el-input-number
+          size="small"
+          style="width: 106px;"
+          :value="scope.row.num"
+          :min="1"
+          @change="num => onNumChange(num, scope.$index)">
+        </el-input-number>
       </template>
     </el-table-column>
 
     <el-table-column label="利润 %" width="130">
       <template scope="scope">
-        <el-input-number size="small" style="width: 106px;" v-model="num" :min="0" :max="500"></el-input-number>
+        <el-input-number
+          size="small"
+          style="width: 106px;"
+          :value="scope.row.profit"
+          :min="0"
+          :max="500"
+          @change="profit => onProfitChange(profit, scope.$index)">
+        </el-input-number>
       </template>
     </el-table-column>
 
 
     <el-table-column label="合价" width="80">
       <template scope="scope">
-        <p class="tc">{{scope.row.sum}}</p>
+        <p class="tc">{{scope.row.sum | computedTotal(scope.row.num, scope.row.profit, scope.row.price)}}</p>
       </template>
     </el-table-column>
 
@@ -92,27 +106,38 @@
 
 <script>
   import { backgroundImage } from 'common/js/mixins'
+  import { mapState } from 'vuex'
+  import { UPDATE_ORDER_DETAIL } from 'store/mutation-types'
 
   export default {
-    props: {
-      tableData: {
-        type: Array,
+    mixins: [backgroundImage],
+
+    filters: {
+      computedTotal(total, num, profit, price) {
+        const newTotal = num *(profit / 100 + 1) * price
+        return Number(newTotal.toFixed(2))
       },
     },
 
-    data() {
-      return {
-        num: 1,
-      }
-    },
-
-    mixins: [backgroundImage],
+    computed: mapState(['orderDetail']),
 
     methods: {
+      onNumChange(num, whichGoodsIndex) {
+        let orderDetail = [...this.orderDetail]
+        orderDetail[whichGoodsIndex].num = num
+        this.$store.commit(UPDATE_ORDER_DETAIL, orderDetail)
+      },
+
+      onProfitChange(profit, whichGoodsIndex) {
+        let orderDetail = [...this.orderDetail]
+        orderDetail[whichGoodsIndex].profit = profit
+        this.$store.commit(UPDATE_ORDER_DETAIL, orderDetail)
+      },
+
       deleteOrder() {
 
       },
-    }
+    },
   }
 </script>
 

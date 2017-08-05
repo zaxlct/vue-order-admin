@@ -22,7 +22,7 @@
           <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button>
         </header>
 
-        <order-table-layout :tableData="orderList" v-if="orderList.length" class="order_table"></order-table-layout>
+        <order-table-layout class="order_table"></order-table-layout>
       </div>
     </section>
   </div>
@@ -30,6 +30,8 @@
 <script>
   import GoodsMenu from 'base/goods-menu/goods-menu'
   import OrderTableLayout from './order-table-layout'
+  import { UPDATE_ORDER_DETAIL } from 'store/mutation-types'
+  import { mapState } from 'vuex'
 
   export default {
     components: {
@@ -43,7 +45,6 @@
         order_id,
         order_name: '',
         order_comment: '',
-        orderList: [],
         otherOrderList: [],
       }
     },
@@ -53,14 +54,16 @@
     },
 
     computed: {
-      orderAmount() {
-        const amount = this.orderList.reduce((num, prev) => {
-          let profit = (prev.profit + 100) / 100
-          return num + (prev.price * prev.num * profit)
-        }, 0)
+      ...mapState({
+        orderAmount: state => {
+          const amount = state.orderDetail.reduce((num, prev) => {
+            let profit = (prev.profit + 100) / 100
+            return num + (prev.price * prev.num * profit)
+          }, 0)
 
-        return Number(amount.toFixed(2))
-      },
+          return Number(amount.toFixed(2))
+        }
+      }),
     },
 
     methods: {
@@ -72,7 +75,7 @@
         this.$http.get('order/order_detail', {params}).then(res => {
           if(!res || !res.data) return
           const { orderDetails, order_name, order_comment, orderExtendDetails } = res.data
-          this.orderList = orderDetails
+          this.$store.commit(UPDATE_ORDER_DETAIL, orderDetails)
           this.otherOrderList = orderExtendDetails
           this.order_name = order_name
           this.order_comment = order_comment
