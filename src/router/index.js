@@ -35,7 +35,7 @@ const routers = [
   },
 
   {
-    path: '/goods-detail/:code',
+    path: '/goods-detail/:order_id/:code',
     component: GoodsDetail,
     meta: {
       title: '商品详情页'

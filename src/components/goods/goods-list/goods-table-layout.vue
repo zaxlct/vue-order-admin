@@ -8,7 +8,7 @@
       <template scope="scope">
         <router-link
           tag="div"
-          :to="'/goods-detail/' + scope.row.code"
+          :to="'/goods-detail/' + $route.params.order_id + '/' + scope.row.code"
           class="goods_img cursor"
           :style="backgroundImage(scope.row.goods_img)">
         </router-link>

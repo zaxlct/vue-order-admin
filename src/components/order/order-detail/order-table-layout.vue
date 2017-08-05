@@ -11,7 +11,7 @@
       <template scope="scope">
         <router-link
           tag="div"
-          :to="'/goods-detail/' + scope.row.sku"
+          :to="'/goods-detail/' + $route.params.order_id + '/' + scope.row.sku"
           class="goods_img cursor"
           :style="backgroundImage(scope.row.goods_img)">
         </router-link>
