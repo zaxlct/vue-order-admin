@@ -9,7 +9,7 @@
       </ul>
 
       <div class="btn_area fr">
-        <el-button class="edit_button" @click="$emit('pushToEditGoodsModel', goods.orderDetailExtendId)">修改</el-button>
+        <el-button class="edit_button" @click="editOtherGoods">修改</el-button>
         <el-button @click="deleteGoods" type="danger">删除</el-button>
       </div>
     </div>
@@ -22,6 +22,7 @@
 
 <script>
   import { backgroundImage } from 'common/js/mixins'
+
   export default {
     props: ['goods'],
 
@@ -42,6 +43,10 @@
             this.$message.error('删除失败！')
           }
         })
+      },
+
+      editOtherGoods() {
+        this.$emit('editGoods', this.goods)
       },
     }
   }
