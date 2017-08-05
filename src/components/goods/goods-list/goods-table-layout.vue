@@ -147,8 +147,8 @@
           if (!res || !res.data) {
             this.$message.error('添加商品失败！')
           } else {
-            this.$emit('onAddedGoodsCountChange', res.data)
             this.$message.success('添加商品成功！')
+            this.$emit('onAddedGoodsCountChange', res.data)
           }
         })
       },

@@ -22,7 +22,7 @@
           <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button>
         </header>
 
-        <order-table-layout class="order_table"></order-table-layout>
+        <order-table-layout @deleteGoods="_fetchOrderDetail" class="order_table"></order-table-layout>
       </div>
     </section>
   </div>

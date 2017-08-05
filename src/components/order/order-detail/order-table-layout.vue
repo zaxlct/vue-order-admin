@@ -19,7 +19,7 @@
         <p class="text_ellipsis">{{scope.row.material}}</p>
         <div class="color_box">
           颜色：
-          <img class="color_circle" :src="scope.row.color"  />
+          <img class="color_circle" :src="scope.row.color" />
         </div>
         <p class="desc text_ellipsis">
           {{scope.row.goods_process_desc}}
@@ -96,7 +96,7 @@
         <el-button
           size="small"
           type="danger"
-          @click="deleteOrder">
+          @click="deleteOrder(scope.row.sku)">
           删除
         </el-button>
       </template>
@@ -127,8 +127,20 @@
         this.$store.commit(UPDATE_ORDER_DETAIL_INDEX_VALUE, params)
       },
 
-      deleteOrder() {
+      deleteOrder(sku) {
+        const data = {
+          sku,
+          order_id: this.$route.params.order_id,
+        }
 
+        this.$http.post('order/delete_goods', data).then(res => {
+          if(res && res.success) {
+            this.$message.success('删除商品成功！')
+            this.$emit('deleteGoods')
+          } else {
+            this.$message.error('删除商品失败！')
+          }
+        })
       },
     },
   }
