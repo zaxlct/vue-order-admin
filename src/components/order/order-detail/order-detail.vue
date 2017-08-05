@@ -44,17 +44,28 @@
         <div class="content_box">
           <header class="header">
             <b class="subtitle">第三方商品</b>
-            <el-button class="fr" type="primary" @click="saveOrder">添加商品</el-button>
+            <el-button class="fr" type="primary" @click="addOtherGoods">添加商品</el-button>
           </header>
 
           <other-goods-layout
             @deleteGoods="_fetchOrderDetail"
+            @editGoods="openEditOtherGoodsDialog"
             v-for="(goods, index) in otherOrderList"
             :key="index"
             :goods="goods">
           </other-goods-layout>
         </div>
 
+        <el-dialog
+          :visible.sync="isShowEditGooods"
+          size="full"
+          :before-close="closeEditGoodsDialog"
+        >
+          <header slot="title" class="dialogTitle">
+            <p class="title">{{goodsModelTitle}}<small class="small">（按 ESC 关闭）</small></p>
+          </header>
+          <edit-goods-layout ref="editGoodsComponent"></edit-goods-layout>
+        </el-dialog>
       </section>
     </div>
   </div>
@@ -63,6 +74,7 @@
   import GoodsMenu from 'base/goods-menu/goods-menu'
   import OrderTableLayout from './order-table-layout'
   import OtherGoodsLayout from './other-goods-layout'
+  import EditGoodsLayout from './edit-goods-layout'
   import { UPDATE_ORDER_DETAIL } from 'store/mutation-types'
   import { mapState, mapGetters } from 'vuex'
 
@@ -71,6 +83,7 @@
       GoodsMenu,
       OrderTableLayout,
       OtherGoodsLayout,
+      EditGoodsLayout,
     },
 
     data() {
@@ -81,6 +94,8 @@
         order_comment: '',
         otherOrderList: [],
         dialogCommentForm: false,
+        isShowEditGooods: false,
+        goodsModelTitle: '',
       }
     },
 
@@ -158,6 +173,28 @@
             this.$message.error('添加备注失败！')
           }
         })
+      },
+
+      addOtherGoods() {
+        this.isShowEditGooods = true
+        this.goodsModelTitle = '添加第三方商品'
+      },
+
+      openEditOtherGoodsDialog(data) {
+        this.goodsModelTitle = '修改第三方商品'
+        this.isShowEditGooods = true
+        this.$nextTick(() => {
+          this.$refs.editGoodsComponent._initGoodsData(data)
+        })
+      },
+
+      // 关闭 Dialog 时清空 子组件里的数据
+      closeEditGoodsDialog(done) {
+        if(this.$refs.editGoodsComponent.isEditedGoods) {
+          this._fetchOrderDetail()
+        }
+        this.$refs.editGoodsComponent._clearGoodsData()
+        done()
       },
     },
   }
