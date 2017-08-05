@@ -46,8 +46,8 @@
 
 <script>
   export default {
-    name: "MenuLayout",
     data() {
+//      const { menu_id = 0, level = 1 } = this.$route.query
       return {
         menu_list: [],
         current_id_a: '',
@@ -80,7 +80,7 @@
         this.$http.get('goods/goods_category').then(res => {
           if(!res) return
           this.menu_list = res.data
-          this.current_id_a = res.data[0].menu_id
+          this.current_id_a = res.data[0].menu_id //让第一个分类打开
         })
       }
     },
