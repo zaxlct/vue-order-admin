@@ -78,20 +78,22 @@
     <el-table-column label="操作" min-width="130">
       <template scope="scope">
         <el-button type="primary" class="add_goods_btn" @click="addGoods(scope.$index)">添加商品</el-button>
-        <el-button
-          size="small"
-          class="small_cad"
-          :disabled="!scope.row.cad"
-          @click="windowOpen(goods.cad)">
-          CAD
-        </el-button>
-        <el-button
-          size="small"
-          class="btn_sku"
-          :disabled="!scope.row.su"
-          @click="windowOpen(goods.su)">
-          SU
-        </el-button>
+        <div class="btn_area">
+          <el-button
+            size="small"
+            class="btn_cad"
+            :disabled="!scope.row.cad"
+            @click="windowOpen(goods.cad)">
+            CAD
+          </el-button>
+          <el-button
+            size="small"
+            class="btn_sku"
+            :disabled="!scope.row.su"
+            @click="windowOpen(goods.su)">
+            SU
+          </el-button>
+        </div>
       </template>
     </el-table-column>
   </el-table>
@@ -203,17 +205,17 @@
 
   .add_goods_btn
     width: 100%
-    height: 30px
     font-size: 14px
 
-  .btn_sku
-    display: inline-block
-    margin-right: 10px
+  .btn_area
     margin-top: 10px
-    width: 45%
+    display: flex
+    justify-content: space-between
 
-  .btn_cad
-    @extend .btn_sku
-    margin-right: 0
+    .btn_sku
+      flex: 1
+
+    .btn_cad
+      @extend .btn_sku
 
 </style>
