@@ -52,7 +52,7 @@
           style="width: 106px;"
           :value="scope.row.num"
           :min="1"
-          @change="num => onNumChange(num, scope.$index)">
+          @change="value => changeOrderDetail(value, 'num', scope.$index)">
         </el-input-number>
       </template>
     </el-table-column>
@@ -65,7 +65,7 @@
           :value="scope.row.profit"
           :min="0"
           :max="500"
-          @change="profit => onProfitChange(profit, scope.$index)">
+          @change="value => changeOrderDetail(value, 'profit', scope.$index)">
         </el-input-number>
       </template>
     </el-table-column>
@@ -107,7 +107,7 @@
 <script>
   import { backgroundImage } from 'common/js/mixins'
   import { mapState } from 'vuex'
-  import { UPDATE_ORDER_DETAIL } from 'store/mutation-types'
+  import { UPDATE_ORDER_DETAIL_INDEX_VALUE } from 'store/mutation-types'
 
   export default {
     mixins: [backgroundImage],
@@ -122,16 +122,9 @@
     computed: mapState(['orderDetail']),
 
     methods: {
-      onNumChange(num, whichGoodsIndex) {
-        let orderDetail = [...this.orderDetail]
-        orderDetail[whichGoodsIndex].num = num
-        this.$store.commit(UPDATE_ORDER_DETAIL, orderDetail)
-      },
-
-      onProfitChange(profit, whichGoodsIndex) {
-        let orderDetail = [...this.orderDetail]
-        orderDetail[whichGoodsIndex].profit = profit
-        this.$store.commit(UPDATE_ORDER_DETAIL, orderDetail)
+      changeOrderDetail(value, key, keyIndex) {
+        const params = { value, key, keyIndex }
+        this.$store.commit(UPDATE_ORDER_DETAIL_INDEX_VALUE, params)
       },
 
       deleteOrder() {
