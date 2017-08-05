@@ -1,49 +1,68 @@
 <template>
   <div class="container">
     <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
+    <div class="order_container">
+      <section class="order_detail">
+        <nav class="nav_container">
+          <div class="box">
+            <el-button @click="$router.push('/')" type="text" icon="arrow-left">返回订单列表</el-button>
+            <span class="order_name">订单：{{'1111'}}</span>
+            <p class="order_comment text_ellipsis" @dblclick="dialogCommentForm = true">
+              备注:
+              <span class="small">{{order_comment || '暂无备注'}}</span>
+            </p>
+            <el-button @click="printPdf" class="pdf fr">导出订单</el-button>
+          </div>
+        </nav>
 
-    <section class="order_detail">
-      <nav class="nav_container">
-        <div class="box">
-          <el-button @click="$router.push('/')" type="text" icon="arrow-left">返回订单列表</el-button>
-          <span class="order_name">订单：{{'1111'}}</span>
-          <p class="order_comment text_ellipsis" @dblclick="dialogCommentForm = true">
-            备注:
-            <span class="small">{{order_comment || '暂无备注'}}</span>
-          </p>
-          <el-button @click="printPdf" class="pdf fr">导出订单</el-button>
+        <div class="content_box">
+          <header class="header">
+            <b class="subtitle">订单详情</b>
+            <el-button class="fr" type="primary" @click="saveOrder">保存订单</el-button>
+            <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button>
+          </header>
+
+          <order-table-layout @deleteGoods="_fetchOrderDetail" class="order_table"></order-table-layout>
         </div>
-      </nav>
 
-      <div class="content_box">
-        <header class="header">
-          <span>订单详情页</span>
-          <el-button class="fr" type="primary" @click="saveOrder">保存订单</el-button>
-          <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button>
-        </header>
+        <el-dialog title="备注" :visible.sync="dialogCommentForm">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4}"
+            placeholder="请输入备注"
+            :value="order_comment"
+            ref="comment_ipt">
+          </el-input>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogCommentForm = false">取 消</el-button>
+            <el-button type="primary" @click="submitComment">确 定</el-button>
+          </div>
+        </el-dialog>
+      </section>
 
-        <order-table-layout @deleteGoods="_fetchOrderDetail" class="order_table"></order-table-layout>
-      </div>
-    </section>
+      <section class="other_goods_list">
+        <div class="content_box">
+          <header class="header">
+            <b class="subtitle">第三方商品</b>
+            <el-button class="fr" type="primary" @click="saveOrder">添加商品</el-button>
+          </header>
 
-    <el-dialog title="备注" :visible.sync="dialogCommentForm">
-      <el-input
-        type="textarea"
-        :autosize="{ minRows: 2, maxRows: 4}"
-        placeholder="请输入备注"
-        :value="order_comment"
-        ref="comment_ipt">
-      </el-input>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogCommentForm = false">取 消</el-button>
-        <el-button type="primary" @click="submitComment">确 定</el-button>
-      </div>
-    </el-dialog>
+          <other-goods-layout
+            @deleteGoods="_fetchOrderDetail"
+            v-for="(goods, index) in otherOrderList"
+            :key="index"
+            :goods="goods">
+          </other-goods-layout>
+        </div>
+
+      </section>
+    </div>
   </div>
 </template>
 <script>
   import GoodsMenu from 'base/goods-menu/goods-menu'
   import OrderTableLayout from './order-table-layout'
+  import OtherGoodsLayout from './other-goods-layout'
   import { UPDATE_ORDER_DETAIL } from 'store/mutation-types'
   import { mapState, mapGetters } from 'vuex'
 
@@ -51,6 +70,7 @@
     components: {
       GoodsMenu,
       OrderTableLayout,
+      OtherGoodsLayout,
     },
 
     data() {
@@ -152,7 +172,7 @@
     .goods_menu
       width: 220px
 
-    .order_detail
+    .order_container
       flex: 1
 
   .nav_container
@@ -196,8 +216,12 @@
       height: 36px
       line-height: 36px
 
+      .subtitle
+        font-size: 18px
+
 
     .order_table
       width: 100%
       height: auto
+
   </style>
