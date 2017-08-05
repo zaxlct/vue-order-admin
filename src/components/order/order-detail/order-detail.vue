@@ -31,7 +31,7 @@
   import GoodsMenu from 'base/goods-menu/goods-menu'
   import OrderTableLayout from './order-table-layout'
   import { UPDATE_ORDER_DETAIL } from 'store/mutation-types'
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -54,16 +54,7 @@
     },
 
     computed: {
-      ...mapState({
-        orderAmount: state => {
-          const amount = state.orderDetail.reduce((num, prev) => {
-            let profit = (prev.profit + 100) / 100
-            return num + (prev.price * prev.num * profit)
-          }, 0)
-
-          return Number(amount.toFixed(2))
-        }
-      }),
+      ...mapGetters(['orderAmount', 'orderSpList']),
 
       ...mapState({
         orderDetail: state => state.orderDetail
@@ -98,13 +89,8 @@
       },
 
       saveOrder() {
-        const sp = this.orderDetail.map(goods =>
-          goods.sku + '@' +
-          goods.profit + '@' +
-          goods.num
-        ).join(',')
         const data = {
-          sp,
+          sp: this.orderSpList,
           order_id: this.order_id
         }
         this.$http.post('order/save_all_goods', data).then(res => {
