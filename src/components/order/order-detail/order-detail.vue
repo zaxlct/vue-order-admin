@@ -64,6 +64,10 @@
           return Number(amount.toFixed(2))
         }
       }),
+
+      ...mapState({
+        orderDetail: state => state.orderDetail
+      }),
     },
 
     methods: {
@@ -94,7 +98,23 @@
       },
 
       saveOrder() {
-
+        const sp = this.orderDetail.map(goods =>
+          goods.sku + '@' +
+          goods.profit + '@' +
+          goods.num
+        ).join(',')
+        const data = {
+          sp,
+          order_id: this.order_id
+        }
+        this.$http.post('order/save_all_goods', data).then(res => {
+          if(!res) return
+          if(res.success) {
+            this.$message.success('保存订单成功！')
+          } else {
+            this.$message.error('保存订单失败！')
+          }
+        })
       },
     },
   }
