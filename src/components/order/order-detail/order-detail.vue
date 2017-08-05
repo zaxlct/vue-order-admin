@@ -7,9 +7,9 @@
         <div class="box">
           <el-button @click="$router.push('/')" type="text" icon="arrow-left">返回订单列表</el-button>
           <span class="order_name">订单：{{'1111'}}</span>
-          <p class="order_comment text_ellipsis" @dblclick="dialogCommitForm = true">
+          <p class="order_comment text_ellipsis" @dblclick="dialogCommentForm = true">
             备注:
-            <span class="small">{{1111 || '暂无备注'}}</span>
+            <span class="small">{{order_comment || '暂无备注'}}</span>
           </p>
           <el-button @click="printPdf" class="pdf fr">导出订单</el-button>
         </div>
@@ -25,6 +25,20 @@
         <order-table-layout @deleteGoods="_fetchOrderDetail" class="order_table"></order-table-layout>
       </div>
     </section>
+
+    <el-dialog title="备注" :visible.sync="dialogCommentForm">
+      <el-input
+        type="textarea"
+        :autosize="{ minRows: 2, maxRows: 4}"
+        placeholder="请输入备注"
+        :value="order_comment"
+        ref="comment_ipt">
+      </el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogCommentForm = false">取 消</el-button>
+        <el-button type="primary" @click="submitComment">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -46,6 +60,7 @@
         order_name: '',
         order_comment: '',
         otherOrderList: [],
+        dialogCommentForm: false,
       }
     },
 
@@ -99,6 +114,28 @@
             this.$message.success('保存订单成功！')
           } else {
             this.$message.error('保存订单失败！')
+          }
+        })
+      },
+
+      submitComment() {
+        let comment = this.$refs.comment_ipt.$refs.textarea.value.trim()
+
+        if(comment.length > 50) {
+          return this.$message.error('最多不能超过 50字！')
+        }
+        this.order_comment = comment
+        this.dialogCommentForm = false
+        const data = {
+          comment,
+          order_id: this.order_id,
+        }
+        this.$http.post('order/order_comment', data).then(res => {
+          if(!res) return
+          if(res.success) {
+            this.$message.success('添加备注成功！')
+          } else {
+            this.$message.error('添加备注失败！')
           }
         })
       },
