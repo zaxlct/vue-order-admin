@@ -1,6 +1,7 @@
 const OrderList = resolve => import('order/order-list/order-list').then(module => resolve(module))
 const Login = resolve => import('login/login').then(module => resolve(module))
 const GoodsList = resolve => import('goods/goods-list/goods-list').then(module => resolve(module))
+const GoodsDetail = resolve => import('goods/goods-detail/goods-detail').then(module => resolve(module))
 const OrderDetail = resolve => import('order/order-detail/order-detail').then(module => resolve(module))
 
 const routers = [
@@ -30,6 +31,14 @@ const routers = [
     component: GoodsList,
     meta: {
       title: '商品列表'
+    },
+  },
+
+  {
+    path: '/goods-detail/:code',
+    component: GoodsDetail,
+    meta: {
+      title: '商品详情页'
     },
   },
 
