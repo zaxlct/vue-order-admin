@@ -10,8 +10,9 @@
     <el-table-column label="产品图" width="170">
       <template scope="scope">
         <router-link
+          tag="div"
           :to="'/goods-detail/' + scope.row.sku"
-          class="goods_img"
+          class="goods_img cursor"
           :style="backgroundImage(scope.row.goods_img)">
         </router-link>
       </template>

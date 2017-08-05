@@ -6,7 +6,12 @@
     border>
     <el-table-column label="产品图" width="180">
       <template scope="scope">
-        <div class="goods_img" :style="backgroundImage(scope.row.goods_img)"></div>
+        <router-link
+          tag="div"
+          :to="'/goods-detail/' + scope.row.code"
+          class="goods_img cursor"
+          :style="backgroundImage(scope.row.goods_img)">
+        </router-link>
       </template>
     </el-table-column>
 

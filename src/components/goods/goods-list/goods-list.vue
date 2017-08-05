@@ -4,8 +4,7 @@
     <section class="goods_list">
       <header class="header_nav">
         <div class="box">
-          订单：<router-link :to="'/order-detail/' + this.order_id">{{order_name}}</router-link>
-          <router-link :to="'/order_detail/'" class="order_name heme_color"></router-link>
+          订单：<router-link class="order_name" :to="'/order-detail/' + this.order_id">{{order_name}}</router-link>
           <el-input
             ref="searchInput"
             class="search_input fr mt10"
