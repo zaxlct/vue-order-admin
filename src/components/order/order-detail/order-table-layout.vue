@@ -1,4 +1,5 @@
 <template>
+<div>
   <el-table
     :data="orderDetail"
     v-if="orderDetail.length"
@@ -90,7 +91,7 @@
 
     <el-table-column label="备注" width="80">
       <template scope="scope">
-        <p class="tc">{{scope.row.comment}}</p>
+        <p @dblclick="openCommentDialog(scope.$index)" class="tc cursor">{{scope.row.comment || '暂无备注'}}</p>
       </template>
     </el-table-column>
 
@@ -106,6 +107,21 @@
       </template>
     </el-table-column>
   </el-table>
+
+  <el-dialog title="备注" :visible.sync="dialogCommentForm" v-if="orderDetail.length">
+    <el-input
+      type="textarea"
+      :autosize="{ minRows: 2, maxRows: 4}"
+      placeholder="请输入备注"
+      :value="orderDetail[currentEditCommentIndex].comment"
+      ref="commentIpt">
+    </el-input>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogCommentForm = false">取 消</el-button>
+      <el-button type="primary" @click="submitComment">确 定</el-button>
+    </div>
+  </el-dialog>
+</div>
 </template>
 
 <script>
@@ -114,6 +130,13 @@
   import { UPDATE_ORDER_DETAIL_INDEX_VALUE } from 'store/mutation-types'
 
   export default {
+    data() {
+      return {
+        dialogCommentForm: false,
+        currentEditCommentIndex: 0,
+      }
+    },
+
     mixins: [backgroundImage],
 
     filters: {
@@ -143,6 +166,36 @@
             this.$emit('deleteGoods')
           } else {
             this.$message.error('删除商品失败！')
+          }
+        })
+      },
+
+      openCommentDialog(index) {
+        this.dialogCommentForm = true
+        this.currentEditCommentIndex = index
+      },
+
+      submitComment() {
+        let comment = this.$refs.commentIpt.$refs.textarea.value.trim()
+
+        if(comment.length > 50) {
+          return this.$message.error('最多不能超过 50字！')
+        }
+
+        this.dialogCommentForm = false
+        const params = { value: comment, key: 'comment', keyIndex: this.currentEditCommentIndex }
+        this.$store.commit(UPDATE_ORDER_DETAIL_INDEX_VALUE, params)
+        const data = {
+          order_id: this.$route.params.order_id,
+          sku: this.orderDetail[this.currentEditCommentIndex].sku,
+          comment,
+        }
+        this.$http.post('order/order_detail_comment', data).then(res => {
+          if(!res) return
+          if(res.success) {
+            this.$message.success('添加备注成功！')
+          } else {
+            this.$message.error('添加备注失败！')
           }
         })
       },
