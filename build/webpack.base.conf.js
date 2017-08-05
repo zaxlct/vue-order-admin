@@ -26,6 +26,7 @@ module.exports = {
       'order': resolve('src/components/order'),
       'login': resolve('src/components/login'),
       'base': resolve('src/base'),
+      'store': resolve('src/store'),
     }
   },
   module: {

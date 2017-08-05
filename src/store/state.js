@@ -9,6 +9,7 @@ const state = {
     order_id: '',
   },
   goodsList: {},
+  orderDetail: [],
 }
 
 export default state

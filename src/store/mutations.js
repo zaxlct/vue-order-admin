@@ -8,8 +8,12 @@ const matutaions = {
     }
   },
 
-  [types.UPDATE_GOODS_LIST](state, goodsList) {
-    state.goodsList = goodsList
+  [types.UPDATE_GOODS_LIST](state, newGoodsList) {
+    state.goodsList = newGoodsList
+  },
+
+  [types.UPDATE_ORDER_DETAIL](state, newOrderDetail) {
+    state.orderDetail = newOrderDetail
   },
 }
 
