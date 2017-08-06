@@ -3,7 +3,7 @@
     <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
 
     <div class="goods_container">
-      <nav class="nav"><router-link to="/">订单名字</router-link></nav>
+      <nav class="nav"><router-link :to="'/order-detail/' + order_id">订单名字：{{goods.belong_order_name}}</router-link></nav>
 
       <section class="goods_white_card">
         <header class="goods_info">
@@ -171,7 +171,7 @@
         margin-top: 20px
         padding-left: 20px
         padding-right: 20px
-        width: 800px
+        width: 820px
         background: #fff
 
         .h2, .h3
