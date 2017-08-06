@@ -4,6 +4,7 @@ import { Message } from 'element-ui'
 export const Axios = axios.create({
   baseURL: process.env.BASE_API,
   timeout: 5000,
+  withCredentials: true, //带上 cookie
 })
 
 Axios.interceptors.request.use(config => {
