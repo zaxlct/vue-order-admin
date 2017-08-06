@@ -12,7 +12,7 @@
 
     <div class="input_box">
       项目名称：
-      <el-input class="input" type="number" v-model.trim="form.order_name" placeholder="请输入项目名称"></el-input>
+      <el-input class="input" v-model.trim="form.order_name" placeholder="请输入项目名称"></el-input>
     </div>
 
     <div class="textarea_box">
@@ -85,10 +85,10 @@
           customerService: 5,
         },
         rateList: [
-          {key: 'timeLimit', value: '工期'},
+          {key: 'time_limit', value: '工期'},
           {key: 'quality', value: '质量'},
           {key: 'effect', value: '效果'},
-          {key: 'customerService', value: '售后'},
+          {key: 'customer_service', value: '售后'},
         ],
         uploadUrl: process.env.BASE_API + '/goods/add_goods_comment',
         uploadImgList: [],
