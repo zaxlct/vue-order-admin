@@ -115,7 +115,7 @@
           price: '',
           desc: '',
           order_detail_extend_id: '',
-          order_id: '',
+          order_id: this.$route.params.order_id,
         }
       },
 

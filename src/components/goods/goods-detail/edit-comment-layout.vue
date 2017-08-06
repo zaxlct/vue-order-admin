@@ -144,7 +144,7 @@
           quality: 5,
           effect: 5,
           goods_comment_id: '',
-          code: '',
+          code: this.code,
         }
       },
 
