@@ -157,12 +157,11 @@
       },
 
       onSubmit() {
-        const del_img_ids = this.del_img_ids
+        const { del_img_ids, form } = this
         const data = {
-          ...this.form,
+          ...form,
           img_ids: del_img_ids.join(),
         }
-        console.log(data)
         this.$http.post('goods/add_goods_comment', data).then(res => {
           if (!res) return
           this.isEditedComment = true
@@ -189,7 +188,6 @@
       handleUploadSuccess(res) {
         const { data } = res
         if(!data) {
-          alert('上传失败，请重新上传！')
           this.fileList = []
           return this.$message.error('上传失败，请重新上传！')
         }

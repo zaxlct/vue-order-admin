@@ -128,9 +128,9 @@
       },
 
       onSubmit() {
-        const del_img_ids = this.del_img_ids
+        const { del_img_ids, form } = this
         const data = {
-          ...this.form,
+          ...form,
           img_ids: del_img_ids.join(),
         }
         this.$http.post('order/add_extend_goods', data).then(res => {
