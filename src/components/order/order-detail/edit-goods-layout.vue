@@ -14,7 +14,12 @@
       </li>
       <li class="item">
         描述：
-        <el-input class="input" v-model.trim="form.desc" placeholder="请输入商品描述"></el-input>
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 6}"
+          placeholder="请输入商品描述，最多500字"
+          v-model.trim="form.desc">
+        </el-input>
       </li>
     </ul>
 
@@ -129,6 +134,10 @@
 
       onSubmit() {
         const { del_img_ids, form } = this
+        if(form.desc.length > 500) {
+          this.$message.error('商品描述超过了 500 个字符！')
+          return
+        }
         const data = {
           ...form,
           img_ids: del_img_ids.join(),
@@ -144,6 +153,10 @@
       },
 
       beforeUpload(file) {
+        if(this.form.desc.length > 500) {
+          this.$message.error('商品描述超过了 500 个字符！')
+          return
+        }
         const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
         const isLt2M = file.size / 1024 / 1024 < 10
 
@@ -159,7 +172,6 @@
       handleUploadSuccess(res) {
         const { data } = res
         if(!data) {
-          alert('上传失败，请重新上传！')
           this.fileList = []
           return this.$message.error('上传失败，请重新上传！')
         }
