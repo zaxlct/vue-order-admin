@@ -7,51 +7,50 @@
 
       <section class="goods_white_card">
         <header class="goods_info">
-          <div class="goods_cover" :style="backgroundImage(info.goods_img)"></div>
+          <div class="goods_cover" :style="backgroundImage(goods.goods_img)"></div>
           <div class="goods_desc">
-            <h2 class="h2">{{info.goods_name || '商品名字'}}</h2>
+            <h2 class="h2">{{goods.goods_name || '商品名字'}}</h2>
             <ul>
-              <li>供应商：{{info.supplier}}</li>
-              <li>产品编码：{{info.productNum}}</li>
-              <li>产品材质：{{info.material}}</li>
-              <li>工艺：{{info.goods_process_desc || '无'}}</li>
-              <li>工期：{{info.time_limit}}</li>
-              <li>描述：{{info.desc || '无'}}</li>
+              <li>供应商：{{goods.supplier}}</li>
+              <li>产品编码：{{goods.productNum}}</li>
+              <li>产品材质：{{goods.material}}</li>
+              <li>工艺：{{goods.goods_process_desc || '无'}}</li>
+              <li>工期：{{goods.time_limit}}</li>
+              <li>描述：{{goods.desc || '无'}}</li>
               <li>链接：
-                <a class="text_breakWord" :href="info.link">{{info.link || '无'}}</a>
+                <a class="text_breakWord" :href="goods.link">{{goods.link || '无'}}</a>
               </li>
-              <li>税金：{{info.taxes || '无'}}</li>
-              <li>运费：{{info.freight || '无'}}</li>
+              <li>税金：{{goods.taxes || '无'}}</li>
+              <li>运费：{{goods.freight || '无'}}</li>
             </ul>
 
             <h3 class="h3">规格</h3>
             <p>
-              {{info.sizes}}
+              {{goods.sizes}}
             </p>
             <h1 class="h1">
-              <small>￥</small>{{info.price}}
+              <small>￥</small>{{goods.price}}
             </h1>
 
             <section class="add_goods_box">
               颜色：
               <div
-                v-for="(vos, index) in info.goodsPropertyVos"
+                v-for="(vos, index) in goods.goodsPropertyVos"
                 :key="index"
                 :style="backgroundImage(vos.color, 'cover')"
-                @click="selectColor(vos.color, vos.sku, index)"
-                :class="circle_index == index ? 'seleted' : ''"
+                @click="selectColor(index)"
+                :class="whichColorIndex == index ? 'selected' : ''"
                 class="color_circle">
                 <i class="i fr i-2"></i>
               </div>
-              <span v-if="!info.goodsPropertyVos.length">暂无数据</span>
             </section>
 
             <el-input-number class="input_num" size="small" :max="100000" :min="1" v-model="num"></el-input-number>
             <div class="btn_list">
               <el-button class="add_order" @click="add_goods" type="primary">添加订单</el-button>
 
-              <el-button type="primary" :disabled="!info.cad" @click="windowOpen(info.cad)" class="cad">CAD</el-button>
-              <el-button type="primary" :disabled="!info.su" @click="windowOpen(info.su)" class="su">SU</el-button>
+              <el-button type="primary" :disabled="!goods.cad" @click="windowOpen(goods.cad)" class="cad">CAD</el-button>
+              <el-button type="primary" :disabled="!goods.su" @click="windowOpen(goods.su)" class="su">SU</el-button>
             </div>
           </div>
         </header>
@@ -59,18 +58,14 @@
         <div class="goods_show">
           <h2 class="divide">产品展示</h2>
           <div class="img_list">
-            <div class="img" v-for="(src, index) in info.img_list" :key="index" :style="backgroundImage(src)"></div>
+            <div class="img" v-for="(src, index) in goods.img_list" :key="index" :style="backgroundImage(src)"></div>
           </div>
         </div>
 
-        <div class="comment_list">
-          <!-- 必须要用 this.info.code，this.code 可能是 sku （从订单详情页传递过来的）-->
-          <GoodsCommentLayout :code="this.info.code"></GoodsCommentLayout>
-        </div>
+        <!-- 必须要用 this.goods.code，this.code 可能是 sku （从订单详情页传递过来的）-->
+        <GoodsCommentLayout :code="this.goods.code"></GoodsCommentLayout>
       </section>
     </div>
-
-
   </section>
 </template>
 
@@ -87,13 +82,8 @@
         code,
         order_id,
         num: 1,
-        info: {
-          goodsPropertyVos: [],
-          code: '',
-        },
-        sku: '',
-        color: '',
-        circle_index: 0,
+        goods: {},
+        whichColorIndex: 0,
       }
     },
 
@@ -103,6 +93,7 @@
       GoodsCommentLayout,
       GoodsMenu,
     },
+
     created() {
       this._fetchGoodsDetail()
     },
@@ -113,12 +104,6 @@
           path: '/goods-list/' + this.order_id,
           query,
         })
-      },
-
-      selectColor(color, sku, index) {
-        this.color = color
-        this.sku = sku
-        this.circle_index = index
       },
 
       windowOpen(url) {
@@ -133,31 +118,28 @@
 
         this.$http('goods/goods_detail', {params}).then(res => {
           if (!res || !res.data) return
-          const { data } = res
-          this.info = data
-          this.color = data.goodsPropertyVos[0].color
-          this.sku = data.goodsPropertyVos[0].sku
+          this.goods = res.data
         })
       },
 
+      selectColor(whichColorIndex) {
+        this.whichColorIndex = whichColorIndex
+      },
+
       add_goods() {
-        // TODO 选择 SKU 和 颜色暂时用默认值
-        const DATA = {
-          sku: this.sku,
-          color: this.color,
+        const { sku, color } = this.goods.goodsPropertyVos[this.whichColorIndex]
+        const data = {
+          sku,
+          color,
           num: this.num,
           order_id: this.order_id,
         }
-        const AJAX = new AjaxFactory('order/add_goods', DATA)
-        AJAX.POST().then(res => {
+        this.$http.post('order/add_goods', data).then(res => {
           if (!res) return
-          const {
-            success = false
-          } = res
-          if (success) {
-            this.message('添加商品成功！', 'success')
+          if (res.success) {
+            this.$message('添加商品成功！')
           } else {
-            this.message('添加商品失败！', 'error')
+            this.$message('添加商品失败！')
           }
         })
       },
@@ -236,7 +218,7 @@
         i
           display: none
 
-        .seleted i
+        .selected i
           display: block
           position: absolute
           bottom: 0
