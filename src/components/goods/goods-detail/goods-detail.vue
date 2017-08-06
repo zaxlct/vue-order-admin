@@ -137,9 +137,9 @@
         this.$http.post('order/add_goods', data).then(res => {
           if (!res) return
           if (res.success) {
-            this.$message('添加商品成功！')
+            this.$message.success('添加商品成功！')
           } else {
-            this.$message('添加商品失败！')
+            this.$message.error('添加商品失败！')
           }
         })
       },
