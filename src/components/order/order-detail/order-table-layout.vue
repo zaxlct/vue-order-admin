@@ -11,7 +11,7 @@
       <template scope="scope">
         <router-link
           tag="div"
-          :to="'/goods-detail/' + $route.params.order_id + '/' + scope.row.sku"
+          :to="'/goods-detail/' + $route.params.order_id + '/' + scope.row.sku + '?order_name=' + order_name"
           class="goods_img cursor"
           :style="backgroundImage(scope.row.goods_img)">
         </router-link>
@@ -131,6 +131,7 @@
   import { UPDATE_ORDER_DETAIL_INDEX_VALUE } from 'store/mutation-types'
 
   export default {
+    props: ['order_name'],
     data() {
       return {
         dialogCommentForm: false,

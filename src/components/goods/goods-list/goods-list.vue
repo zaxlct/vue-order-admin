@@ -42,6 +42,7 @@
 
         <goods-table-layout
           :tableData="goodsListData"
+          :order_name="order_name"
           v-if="goodsListData.length"
           @onAddedGoodsCountChange="num => addedGoodsCount = num"
           class="goods_table">

@@ -6,7 +6,7 @@
         <nav class="nav_container">
           <div class="box">
             <el-button @click="$router.push('/')" type="text" icon="arrow-left">返回订单列表</el-button>
-            <span class="order_name">订单：{{'1111'}}</span>
+            <span class="order_name">订单：{{order_name}}</span>
             <p class="order_comment text_ellipsis" @dblclick="dialogCommentForm = true">
               备注:
               <span class="small">{{order_comment || '暂无备注'}}</span>
@@ -22,7 +22,7 @@
             <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button>
           </header>
 
-          <order-table-layout @deleteGoods="_fetchOrderDetail" class="order_table"></order-table-layout>
+          <order-table-layout :order_name="order_name" @deleteGoods="_fetchOrderDetail" class="order_table"></order-table-layout>
         </div>
 
         <el-dialog title="备注" :visible.sync="dialogCommentForm">

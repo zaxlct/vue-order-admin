@@ -8,7 +8,7 @@
       <template scope="scope">
         <router-link
           tag="div"
-          :to="'/goods-detail/' + $route.params.order_id + '/' + scope.row.code"
+          :to="'/goods-detail/' + $route.params.order_id + '/' + scope.row.code + '?order_name=' + order_name"
           class="goods_img cursor"
           :style="backgroundImage(scope.row.goods_img)">
         </router-link>
@@ -109,6 +109,9 @@
     props: {
       tableData: {
         type: Array,
+      },
+      order_name: {
+        type: String,
       },
     },
     data() {

@@ -3,7 +3,7 @@
     <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
 
     <div class="goods_container">
-      <nav class="nav"><router-link :to="'/order-detail/' + order_id">订单名字：{{goods.belong_order_name}}</router-link></nav>
+      <nav class="nav"><router-link :to="'/order-detail/' + order_id">订单：{{$route.query.order_name}}</router-link></nav>
 
       <section class="goods_white_card">
         <header class="goods_info">
