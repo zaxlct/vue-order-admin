@@ -8,11 +8,15 @@
       <li class="comment_box" v-for="(comment, index) in commentList" :key="index">
         <header class="header">
           <span class="name">账号：{{comment.userName}}</span>
-          <span class="time">创建评论时间：{{comment.createdTime}}</span>
-          <el-button :disabled="!comment.power" type="primary" @click="editComment(comment)" size="small">
-            修改评论
-          </el-button>
-          <el-button :disabled="!comment.power" type="danger" @click="deleteComment(comment.id)" size="small">删除评论</el-button>
+          <span class="order_name text_ellipsis">项目名：{{comment.orderName || '暂无'}}</span>
+          <span class="time">评论时间：{{comment.createdTime}}</span>
+
+          <div class="btn_area">
+            <el-button :disabled="!comment.power" type="primary" @click="editComment(comment)" size="small">
+              修改评论
+            </el-button>
+            <el-button :disabled="!comment.power" type="danger" @click="deleteComment(comment.id)" size="small">删除评论</el-button>
+          </div>
         </header>
 
         <div class="rate_box" v-for="rate in rateList" :key="rate.key">
@@ -25,6 +29,12 @@
           </el-rate>
         </div>
 
+        <h4 class="h4" v-if="comment.goodsCommentImgVOs.length">评论图片</h4>
+        <ul v-if="comment.goodsCommentImgVOs.length" class="img_list">
+          <li v-for="(img, index) in comment.goodsCommentImgVOs" :key="index" :style="backgroundImage(img.imgPath)"></li>
+        </ul>
+
+        <h4 class="h4">评论内容</h4>
         <p class="content">
           {{comment.comment}}
         </p>
@@ -45,8 +55,10 @@
 
 <script>
   import EditCommentLayout from './edit-comment-layout'
+  import { backgroundImage } from 'common/js/mixins'
   export default {
     props: ['code'],
+    mixins: [backgroundImage],
     components: {
       EditCommentLayout,
     },
@@ -157,19 +169,33 @@
 
     .header
       margin-bottom: 10px
+      height: 30px
+      line-height: 30px
 
     .name
       margin-right: 20px
       font-size: 16px
       color: #20a0ff
 
+    .order_name
+      margin-right: 15px
+      display: inline-block
+      vertical-align: top
+      max-width: 160px
+      font-size: 14px
+
     .time
-      margin-right: 20px
+      margin-right: 15px
       font-size: 14px
 
     .rate_box
       font-size: 14px
 
+    .btn_area
+      float: right
+
+    .h4
+      margin-bottom: 0
 
     .content
       margin-top: 15px
@@ -177,6 +203,16 @@
       word-break: break-word
       color: #666
       font-size: 14px
+
+    .img_list
+      margin-top: 10px
+      padding-left: 0
+
+      li
+        display: inline-block
+        margin: 10px
+        width: 220px
+        height: 220px
 
 
   .demonstration
