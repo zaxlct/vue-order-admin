@@ -2,19 +2,19 @@
   <section class="edit_goods_container">
     <ul class="item_list">
       <li class="item">
-        标题：<el-input class="input" v-model.trim="form.title" placeholder="请输入内容"></el-input>
+        标题：<el-input class="input" v-model.trim="form.title" placeholder="请输入商品标题"></el-input>
       </li>
       <li class="item">
         价格：
-        <el-input class="input" type="number" v-model.number.trim="form.price" placeholder="请输入内容"></el-input>
+        <el-input class="input" type="number" v-model.number.trim="form.price" placeholder="请输入商品价格"></el-input>
       </li>
       <li class="item">
         链接：
-        <el-input class="input" v-model.trim="form.link" placeholder="请输入内容"></el-input>
+        <el-input class="input" v-model.trim="form.link" placeholder="请输入商品链接"></el-input>
       </li>
       <li class="item">
         描述：
-        <el-input class="input" v-model.trim="form.desc" placeholder="请输入内容"></el-input>
+        <el-input class="input" v-model.trim="form.desc" placeholder="请输入商品描述"></el-input>
       </li>
     </ul>
 
