@@ -110,23 +110,23 @@
             quality,
             effect,
             comment,
-            order_name,
-            time_limit,
-            customer_service,
-            extendGoodsImgVOs,
+            orderName,
+            timeLimit,
+            customerService,
+            goodsCommentImgVOs,
             goodsCommentId,
           } = data
           this.form = {
             quality,
             effect,
             comment,
-            order_name,
-            time_limit,
-            customer_service,
+            order_name: orderName,
+            time_limit: timeLimit,
+            customer_service: customerService,
             goods_comment_id: goodsCommentId,
             code: this.code,
           }
-          this.uploadImgList = extendGoodsImgVOs
+          this.uploadImgList = goodsCommentImgVOs
         }
       },
 
@@ -162,6 +162,7 @@
           ...this.form,
           img_ids: del_img_ids.join(),
         }
+        console.log(data)
         this.$http.post('goods/add_goods_comment', data).then(res => {
           if (!res) return
           this.isEditedComment = true
@@ -192,10 +193,10 @@
           this.fileList = []
           return this.$message.error('上传失败，请重新上传！')
         }
-        if(data.extendGoodsImgVOs) {
+        if(data.goodsCommentImgVOs) {
           this.isEditedComment = true
           this.form.goods_comment_id = data.goodsCommentId
-          this.uploadImgList = data.extendGoodsImgVOs
+          this.uploadImgList = data.goodsCommentImgVOs
         }
       },
 
@@ -244,13 +245,14 @@
 
     .img_list
       margin-top: 0
+      margin-left: 0
+      padding-left: 0
 
       .item
         display: inline-block
-        margin-right: 10px
-        margin-bottom: 10px
-        width: 250px
-        height: 250px
+        margin: 10px
+        width: 240px
+        height: 240px
 
       .active
         border: 2px red solid
