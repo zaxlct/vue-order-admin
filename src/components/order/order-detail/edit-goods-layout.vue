@@ -207,9 +207,6 @@
       margin-bottom: 10px
       width: 250px
       height: 250px
-      background: url('http://lorempixel.com/250/250/') center center no-repeat
-      -webkit-background-size: contain
-      background-size: contain
 
     .active
       border: 2px red solid
