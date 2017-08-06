@@ -47,7 +47,7 @@
 
             <el-input-number class="input_num" size="small" :max="100000" :min="1" v-model="num"></el-input-number>
             <div class="btn_list">
-              <el-button class="add_order" @click="add_goods" type="primary">添加订单</el-button>
+              <el-button class="add_order" @click="add_goods" type="primary">添加商品</el-button>
 
               <el-button type="primary" :disabled="!goods.cad" @click="windowOpen(goods.cad)" class="cad">CAD</el-button>
               <el-button type="primary" :disabled="!goods.su" @click="windowOpen(goods.su)" class="su">SU</el-button>
