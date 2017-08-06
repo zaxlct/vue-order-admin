@@ -162,6 +162,12 @@
       },
 
       onMenuChange(params) {
+        // 商品菜单变动时清空 searchKey
+        this.searchKey = ''
+        params = {
+          ...params,
+          search_key: '',
+        }
         this.$store.dispatch('fetchGoodsList', params)
       },
 
