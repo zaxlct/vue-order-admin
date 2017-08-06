@@ -88,14 +88,14 @@
             size="small"
             class="btn_cad"
             :disabled="!scope.row.cad"
-            @click="windowOpen(goods.cad)">
+            @click="windowOpen(scope.row.cad)">
             CAD
           </el-button>
           <el-button
             size="small"
             class="btn_sku"
             :disabled="!scope.row.su"
-            @click="windowOpen(goods.su)">
+            @click="windowOpen(scope.row.su)">
             SU
           </el-button>
         </div>
