@@ -15,7 +15,7 @@
             <el-button :disabled="!comment.power" type="primary" @click="editComment(comment)" size="small">
               修改评论
             </el-button>
-            <el-button :disabled="!comment.power" type="danger" @click="deleteComment(comment.id)" size="small">删除评论</el-button>
+            <el-button :disabled="!comment.power" type="danger" @click="deleteComment(comment.goodsCommentId)" size="small">删除评论</el-button>
           </div>
         </header>
 
@@ -103,8 +103,8 @@
         })
       },
 
-      deleteComment(id) {
-        const data = { id }
+      deleteComment(goods_comment_id) {
+        const data = { goods_comment_id }
         this.$http.post('goods/del_goods_comment', data).then(res => {
           if(!res) return
           if(res.success) {
