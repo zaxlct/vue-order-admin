@@ -12,6 +12,7 @@ const routers = [
 
   {
     path: '/order-list',
+    name: 'OrderList',
     component: OrderList,
     meta: {
       title: '订单列表'
@@ -28,6 +29,7 @@ const routers = [
 
   {
     path: '/goods-list/:order_id',
+    name: 'GoodsList',
     component: GoodsList,
     meta: {
       title: '商品列表'
@@ -36,6 +38,7 @@ const routers = [
 
   {
     path: '/goods-detail/:order_id/:code',
+    name: 'GoodsDetail',
     component: GoodsDetail,
     meta: {
       title: '商品详情页'
@@ -44,6 +47,7 @@ const routers = [
 
   {
     path: '/order-detail/:order_id',
+    name: 'OrderDetail',
     component: OrderDetail,
     meta: {
       title: '订单详情'
