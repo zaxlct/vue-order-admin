@@ -21,8 +21,11 @@ const matutaions = {
   },
 
   [types.FETCH_GOODS_CATEGORY_LIST](state, newCategoryList) {
-    console.log(newCategoryList)
     state.goodsCategoryList = newCategoryList
+  },
+
+  [types.FETCH_GOODS_COLORS_LIST](state, newColorsList) {
+    state.goodsColorsList = newColorsList
   },
 }
 

@@ -28,7 +28,7 @@
 
           <el-select class="color_select" v-model="goodsColor" clearable size="small" placeholder="颜色筛选">
             <el-option
-              v-for="item in goodsAllColor"
+              v-for="item in goodsColorsList"
               :key="item.code"
               :label="item.codeDesc"
               :value="item.code">
@@ -84,7 +84,6 @@
         breadData: {},
         order_name: '',
         goodsColor: '',
-        goodsAllColor: [],
       }
     },
 
@@ -92,10 +91,10 @@
       // pageIndex 一旦改变就触发 onPageChange 事件有点不妥，故加了这个变量做限制
       this.onPageChangeLock = false
       this.$store.dispatch('fetchGoodsList', {order_id: this.order_id})
-      this._fetchGoodsColors()
+      this.$store.dispatch('fetchGoodsColorsList')
     },
 
-    computed: mapState(['fetchGoodsListParams', 'goodsList']),
+    computed: mapState(['fetchGoodsListParams', 'goodsList', 'goodsColorsList']),
 
     watch: {
       goodsList(data) {
@@ -171,13 +170,6 @@
           search_key: '',
         }
         this.$store.dispatch('fetchGoodsList', params)
-      },
-
-      _fetchGoodsColors() {
-        this.$http.get('goods/goods_color').then(res => {
-          if(!res || !res.data) return
-          this.goodsAllColor = res.data
-        })
       },
     },
   }

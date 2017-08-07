@@ -11,6 +11,7 @@ const state = {
   goodsList: {},
   orderDetail: [],
   goodsCategoryList: [],
+  goodsColorsList: [],
 }
 
 export default state

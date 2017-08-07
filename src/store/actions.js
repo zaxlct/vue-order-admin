@@ -21,3 +21,12 @@ export const fetchGoodsCategoryList = function({state, commit}){
     })
   }
 }
+
+export const fetchGoodsColorsList = function({state, commit}){
+  if(!state.goodsColorsList.length) {
+    Axios.get('goods/goods_color').then(res => {
+      if(!res || !res.data) return
+      commit(types.FETCH_GOODS_COLORS_LIST, res.data)
+    })
+  }
+}
