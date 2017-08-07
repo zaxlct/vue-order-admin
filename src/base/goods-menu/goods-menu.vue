@@ -61,12 +61,19 @@
       this.$store.dispatch('fetchGoodsCategoryList')
     },
 
+    mounted() {
+      let goodsCategoryList = this.goodsCategoryList || []
+      if(goodsCategoryList.length) {
+        this.current_id_a = goodsCategoryList[0].menu_id //默认让第一个商品分类展开
+      }
+    },
+
     computed: mapState(['goodsCategoryList']),
 
     watch: {
       goodsCategoryList(data) {
         if(data.length) {
-          this.current_id_a = data[0].menu_id //默认让第一个商品分类打开
+          this.current_id_a = data[0].menu_id //默认让第一个商品分类展开
         }
       },
     },
