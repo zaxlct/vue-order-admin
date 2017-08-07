@@ -68,6 +68,7 @@
 
 <script>
   import { backgroundImage } from 'common/js/mixins'
+  import { CLEAR_FETCH_GOODS_LIST_PARAMS } from 'store/mutation-types'
   export default {
     data() {
       return {
@@ -132,6 +133,7 @@
           if (!res || !res.data) return
           const order_id = res.data
           if (order_id) {
+            this.$store.commit(CLEAR_FETCH_GOODS_LIST_PARAMS)
             this.$router.push(`/goods-list/${order_id}`)
           } else {
             this.$message.error('创建订单失败！', 'error')
