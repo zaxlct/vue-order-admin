@@ -129,11 +129,9 @@
         })
       },
 
-      onMenuChange(query) {
-        this.$router.push({
-          path: '/goods-list/' + this.order_id,
-          query,
-        })
+      onMenuChange(params) {
+        this.$store.dispatch('fetchGoodsList', params)
+        this.$router.push({path: '/goods-list/' + this.order_id})
       },
 
       printPdf() {
