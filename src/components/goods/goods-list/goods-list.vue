@@ -90,7 +90,8 @@
     created() {
       // pageIndex 一旦改变就触发 onPageChange 事件有点不妥，故加了这个变量做限制
       this.onPageChangeLock = false
-      this.$store.dispatch('fetchGoodsList', {order_id: this.order_id})
+
+      this.$store.dispatch('fetchGoodsList', {...this.$route.query, order_id: this.order_id})
       this.$store.dispatch('fetchGoodsColorsList')
     },
 
