@@ -61,15 +61,14 @@
       this.$store.dispatch('fetchGoodsCategoryList')
     },
 
-    computed: {
-      ...mapState({
-        goodsCategoryList: ({goodsCategoryList}) => {
-          if(goodsCategoryList.length) {
-            this.current_id_a = goodsCategoryList[0].menu_id //让第一个分类打开
-          }
-          return goodsCategoryList
+    computed: mapState(['goodsCategoryList']),
+
+    watch: {
+      goodsCategoryList(data) {
+        if(data.length) {
+          this.current_id_a = data[0].menu_id //默认让第一个商品分类打开
         }
-      }),
+      },
     },
 
     methods: {
