@@ -23,7 +23,7 @@
           </div>
 
           <el-collapse-transition v-for="data_grandson in data_son.node_list" :key="data_grandson.menu_id">
-            <section class="menu menu_c" v-if="data_son.node_list && data_son.menu_id === current_id_b">
+            <section class="menu menu_c" v-if="(data_son.node_list && data_son.menu_id === current_id_b)">
               <div
                 @click="changeTree('current_id_c', data_grandson.menu_id, 3)"
                 :class="[ data_grandson.menu_id === current_id_c ? 'active' : '', 'item']">
@@ -49,11 +49,10 @@
 
   export default {
     data() {
-//      const { menu_id = 0, level = 1 } = this.$route.query
       return {
-        current_id_a: '',
-        current_id_b: '',
-        current_id_c: '',
+        current_id_a: 0,
+        current_id_b: 0,
+        current_id_c: 0,
       }
     },
 
@@ -62,9 +61,16 @@
     },
 
     mounted() {
-      let goodsCategoryList = this.goodsCategoryList || []
-      if(goodsCategoryList.length) {
-        this.current_id_a = goodsCategoryList[0].menu_id //默认让第一个商品分类展开
+      let { current_id_a = 0, current_id_b = 0, current_id_c = 0 } = this.$route.query
+      if(this.$route.name === 'GoodsList') {
+        this.current_id_a = Number(current_id_a)
+        this.current_id_b = Number(current_id_b)
+        this.current_id_c = Number(current_id_c)
+      } else {
+        // 在不是 GoodsList 页面时，默认展开左侧商品菜单的第一个分类
+//        if(this.goodsCategoryList.length) {
+//          this.current_id_a = this.goodsCategoryList[0].menu_id
+//        }
       }
     },
 
@@ -72,9 +78,11 @@
 
     watch: {
       goodsCategoryList(data) {
-        if(data.length) {
-          this.current_id_a = data[0].menu_id //默认让第一个商品分类展开
-        }
+        if(this.$route.name === 'GoodsList') return
+        // 在不是 GoodsList 页面时，默认展开左侧商品菜单的第一个分类
+//        if(data.length) {
+//          this.current_id_a = data[0].menu_id
+//        }
       },
     },
 
@@ -90,6 +98,9 @@
         const params = {
           menu_id,
           level,
+          current_id_a: this.current_id_a,
+          current_id_b: this.current_id_b,
+          current_id_c: this.current_id_c,
         }
         this.$emit('onMenuChange', params)
       },
