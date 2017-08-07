@@ -3,7 +3,28 @@ import { Axios } from "common/js/Axios"
 
 export const fetchGoodsList = function({state, commit}, params) {
   commit(types.CHANGE_FETCH_GOODS_LIST_PARAMS, params)
-  Axios.get('goods/goods_list', {params: state.fetchGoodsListParams}).then(res => {
+  // current_id 三个参数只是记录商品菜单的层级，请求 API 时不需要这三个参数
+  // 过滤一下这三个参数
+  const {
+    menu_id,
+    level,
+    goods_color,
+    page_index,
+    page_size,
+    search_key,
+    order_id,
+  } = state.fetchGoodsListParams
+  const paramsFilter = {
+    menu_id,
+    level,
+    goods_color,
+    page_index,
+    page_size,
+    search_key,
+    order_id,
+  }
+
+  Axios.get('goods/goods_list', {params: paramsFilter}).then(res => {
     if(!res) return
     if(!res.data) {
       commit(types.UPDATE_GOODS_LIST, {})
