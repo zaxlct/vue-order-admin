@@ -1,13 +1,16 @@
 # order-admin
 
-> 用 Vue 全家桶搭建的商品订单管理系统
+> 用 Vue 全家桶搭建的商品订单管理后台系统
 
 ## 预览项目
+- [在线预览](http://pc.wo946.com/#/login)
+
+- 本地启动项目
 ```bash
 npm install
 npm start
 ```
-测试账号： test/123
+- 测试账号/密码：test/1
 
 ## 技术栈
 - Vue 2.0
