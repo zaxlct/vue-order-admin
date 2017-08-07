@@ -1,6 +1,8 @@
 <template>
   <section class="container">
-    <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
+    <keep-alive>
+      <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
+    </keep-alive>
 
     <div class="goods_container">
       <nav class="nav"><router-link :to="'/order-detail/' + order_id">订单：{{$route.query.order_name}}</router-link></nav>

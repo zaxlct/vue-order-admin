@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
+    <keep-alive>
+      <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
+    </keep-alive>
     <section class="goods_list">
       <header class="header_nav">
         <div class="box">
