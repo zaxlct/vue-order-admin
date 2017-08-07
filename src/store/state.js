@@ -10,6 +10,7 @@ const state = {
   },
   goodsList: {},
   orderDetail: [],
+  goodsCategoryList: [],
 }
 
 export default state

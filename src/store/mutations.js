@@ -19,6 +19,11 @@ const matutaions = {
   [types.UPDATE_ORDER_DETAIL_INDEX_VALUE](state, {value, key, keyIndex}) {
     state.orderDetail[keyIndex][key] = value
   },
+
+  [types.FETCH_GOODS_CATEGORY_LIST](state, newCategoryList) {
+    console.log(newCategoryList)
+    state.goodsCategoryList = newCategoryList
+  },
 }
 
 export default matutaions

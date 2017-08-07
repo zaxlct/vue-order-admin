@@ -12,3 +12,12 @@ export const fetchGoodsList = function({state, commit}, params) {
     }
   })
 }
+
+export const fetchGoodsCategoryList = function({state, commit}){
+  if(!state.goodsCategoryList.length) {
+    Axios.get('goods/goods_category').then(res => {
+      if(!res || !res.data) return
+      commit(types.FETCH_GOODS_CATEGORY_LIST, res.data)
+    })
+  }
+}

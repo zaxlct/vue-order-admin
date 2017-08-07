@@ -2,7 +2,7 @@
   <div class="menu_layout">
     <router-link to="/"><img src="~common/image/logo.png" class="logo" /></router-link>
 
-    <div class="menu menu_a" v-for="(data, index) in menu_list" :key="index">
+    <div class="menu menu_a" v-for="(data, index) in goodsCategoryList" :key="index">
       <div
         @click="changeTree('current_id_a', data.menu_id, 1)"
         class="item">
@@ -45,11 +45,12 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     data() {
 //      const { menu_id = 0, level = 1 } = this.$route.query
       return {
-        menu_list: [],
         current_id_a: '',
         current_id_b: '',
         current_id_c: '',
@@ -57,7 +58,18 @@
     },
 
     created() {
-      this._fetchMenuData()
+      this.$store.dispatch('fetchGoodsCategoryList')
+    },
+
+    computed: {
+      ...mapState({
+        goodsCategoryList: ({goodsCategoryList}) => {
+          if(goodsCategoryList.length) {
+            this.current_id_a = goodsCategoryList[0].menu_id //让第一个分类打开
+          }
+          return goodsCategoryList
+        }
+      }),
     },
 
     methods: {
@@ -75,14 +87,6 @@
         }
         this.$emit('onMenuChange', params)
       },
-
-      _fetchMenuData() {
-        this.$http.get('goods/goods_category').then(res => {
-          if(!res) return
-          this.menu_list = res.data
-          this.current_id_a = res.data[0].menu_id //让第一个分类打开
-        })
-      }
     },
   }
 </script>
