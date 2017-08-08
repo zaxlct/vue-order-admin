@@ -3,7 +3,7 @@
     <keep-alive>
       <goods-menu @onMenuChange="onMenuChange" class="goods_menu"></goods-menu>
     </keep-alive>
-    <div class="order_container">
+    <div class="order_container" v-loading.body="loading">
       <section class="order_detail">
         <nav class="nav_container">
           <div class="box">
@@ -92,6 +92,7 @@
       const { order_id } = this.$route.params
       return {
         order_id,
+        loading: true,
         order_name: '',
         order_comment: '',
         otherOrderList: [],
@@ -126,7 +127,8 @@
           this.otherOrderList = orderExtendDetails
           this.order_name = order_name
           this.order_comment = order_comment
-        })
+          this.loading = false
+        }).catch(error => this.loading = false)
       },
 
       onMenuChange(query) {
