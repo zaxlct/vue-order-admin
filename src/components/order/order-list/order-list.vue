@@ -1,5 +1,5 @@
 <template>
-  <section id="home_page">
+  <section id="home_page" v-loading.body="loading">
     <header class="header_nav">
       <div class="container">
         <router-link to="/"><img src="~common/image/logo.png" class="logo" /></router-link>
@@ -72,6 +72,7 @@
   export default {
     data() {
       return {
+        loading: false,
         order_name: '',
         search_key: '',
         page_index: 1,
@@ -87,7 +88,7 @@
     created() {
       // page_index 一旦改变就触发 onPageChange 事件有点不妥，故加了这个变量做限制
       this.onPageChangeLock = false
-      this.fetchData()
+      this._fetchOrderList()
     },
 
     filters: {
@@ -154,12 +155,13 @@
         this.$router.push('/login')
       },
 
-      fetchData() {
+      _fetchOrderList() {
         const params = {
           page_index: this.page_index,
           page_size: this.page_size,
           search_key: this.search_key,
         }
+        this.loading = true
 
         this.$http.get('order/order_list', {params} ).then(res => {
           if (res) {
@@ -168,8 +170,9 @@
             } = res.data
             this.order_list = orderListVos
             this.page_count = page_count
+            this.loading = false
           }
-        })
+        }).catch(error => this.loading = false)
       },
 
       // 搜索
@@ -180,7 +183,7 @@
           this.onPageChangeLock = true
           this.pageIndex = 1
         }
-        this.fetchData()
+        this._fetchOrderList()
       },
 
       // 选择页码
@@ -190,7 +193,7 @@
           return
         }
         this.page_index = page
-        this.fetchData()
+        this._fetchOrderList()
       },
     },
   }

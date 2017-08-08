@@ -92,7 +92,7 @@
       const { order_id } = this.$route.params
       return {
         order_id,
-        loading: true,
+        loading: false,
         order_name: '',
         order_comment: '',
         otherOrderList: [],
@@ -119,6 +119,8 @@
         const params = {
           order_id: this.order_id
         }
+
+        this.loading = true
 
         this.$http.get('order/order_detail', {params}).then(res => {
           if(!res || !res.data) return
