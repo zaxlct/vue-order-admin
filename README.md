@@ -3,7 +3,7 @@
 > 用 Vue 全家桶搭建的商品订单管理后台系统
 
 ## 预览项目
-- [在线预览](http://pc.wo946.com/#/login)
+- [在线预览](http://rzk-in.wo946.com/#/login)
 
 - 本地启动项目
 ```bash
